@@ -28,3 +28,6 @@ This repo contains code for AI project: Separating Perception and Reasoning in V
 - Use `%cd /content/drive/MyDrive/AI/project/CSGY-6613` to change directory to local repository folder
 - You will need to run repository setup just once(the first time)
 - Remember to run `!git pull` when restarting work, this will reduce chances for merge conflicts
+
+## Dataset generation
+Dataset generation code for sort-of-CLEVR is added. Use this code to generate the dataset as it cannot be uploaded to github because of size restrictions.
