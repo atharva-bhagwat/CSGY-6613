@@ -16,7 +16,7 @@ def get_coord():
     return np_coord_tensor
 
 class ConvBlock(nn.Module):
-    def __init(self):
+    def __init__(self):
         super(ConvBlock, self).__init__()
         
         self.conv1 = nn.Conv2d(3, 24, 3, stride=2, padding=1)
@@ -87,6 +87,7 @@ class RN(nn.Module):
     def forward(self, img, ques):
         x = self.conv(img)
         # 64(batch) * 24 * 5 * 5
+        # print("x shape ",x.shape)
         mb = x.size()[0] # 64
         n_channels = x.size()[1] # 24
         d = x.size()[2] # 5
@@ -106,9 +107,8 @@ class RN(nn.Module):
         x_j = x_j.repeat(1, 1, 25, 1)
         
         x_full = torch.cat([x_i, x_j], 3)
-        
-        x_ = x_full.view(mb * (d*d) * (d*d), 70)
-        
+        # print("x_full ", x_full.view(mb * (d*d) * (d*d), 63))
+        x_ = x_full.view(mb * (d*d) * (d*d), 63)
         x_ = self.g_fc1(x_)
         x_ = F.relu(x_)
         x_ = self.g_fc2(x_)
@@ -131,7 +131,7 @@ class RN(nn.Module):
         output = self(img, ques)
         loss = F.cross_entropy(output, label)
         pred = output.data.max(1)[1]
-        correct = preq.qe(label.data).cpu().sum()
+        correct = pred.eq(label.data).cpu().sum()
         accuracy = correct * 100. / len(label)
         return accuracy, loss
         
@@ -139,9 +139,9 @@ class RN(nn.Module):
         output = self(img, ques)
         loss = F.cross_entropy(output, label)
         pred = output.data.max(1)[1]
-        correct = preq.qe(label.data).cpu().sum()
+        correct = pred.eq(label.data).cpu().sum()
         accuracy = correct * 100. / len(label)
         return accuracy, loss
         
-    def save_model():
+    def save_model(self,epoch):
         torch.save(self.state_dict(), f"{self.name}_{epoch}.pth")

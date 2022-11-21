@@ -3,56 +3,59 @@ Pytorch implementation of "A simple neural network module for relational reasoni
 Code is based on pytorch/examples/mnist (https://github.com/pytorch/examples/tree/master/mnist)
 """""""""
 from __future__ import print_function
-import argparse
+# import argparse
 import os
 #import cPickle as pickle
 import pickle
 import random
 import numpy as np
-import csv
+# import csv
 
 import torch
-from torch.utils.tensorboard import SummaryWriter
+# from torch.utils.tensorboard import SummaryWriter
 from torch.autograd import Variable
 
-from model import RN, CNN_MLP
+from model import RN
 
 
 # Training settings
-parser = argparse.ArgumentParser(description='PyTorch Relational-Network sort-of-CLVR Example')
-parser.add_argument('--epochs', type=int, default=20, metavar='N',
-                    help='number of epochs to train (default: 20)')
-parser.add_argument('--lr', type=float, default=0.0001, metavar='LR',
-                    help='learning rate (default: 0.0001)')
-parser.add_argument('--no-cuda', action='store_true', default=False,
-                    help='disables CUDA training')
-parser.add_argument('--seed', type=int, default=1, metavar='S',
-                    help='random seed (default: 1)')
-parser.add_argument('--log-interval', type=int, default=10, metavar='N',
-                    help='how many batches to wait before logging training status')
-parser.add_argument('--resume', type=str,
-                    help='resume from model stored')
-# parser.add_argument('--relation-type', type=str, default='binary',
-#                     help='what kind of relations to learn. options: binary, ternary (default: binary)')
+# parser = argparse.ArgumentParser(description='PyTorch Relational-Network sort-of-CLVR Example')
+# parser.add_argument('--epochs', type=int, default=20, metavar='N',
+#                     help='number of epochs to train (default: 20)')
+# parser.add_argument('--lr', type=float, default=0.0001, metavar='LR',
+#                     help='learning rate (default: 0.0001)')
+# parser.add_argument('--no-cuda', action='store_true', default=False,
+#                     help='disables CUDA training')
+# parser.add_argument('--seed', type=int, default=1, metavar='S',
+#                     help='random seed (default: 1)')
+# parser.add_argument('--log-interval', type=int, default=10, metavar='N',
+#                     help='how many batches to wait before logging training status')
+# parser.add_argument('--resume', type=str,
+#                     help='resume from model stored')
+# # parser.add_argument('--relation-type', type=str, default='binary',
+# #                     help='what kind of relations to learn. options: binary, ternary (default: binary)')
+# parser.add_argument('--batch-size', type=int, default=64, metavar='N',
+#                     help='input batch size for training (default: 64)')
+# args = parser.parse_args()
+# args.cuda = not args.no_cuda and torch.cuda.is_available()
 
-args = parser.parse_args()
-args.cuda = not args.no_cuda and torch.cuda.is_available()
+# torch.manual_seed(args.seed)
+# if args.cuda:
+#     torch.cuda.manual_seed(args.seed)
 
-torch.manual_seed(args.seed)
-if args.cuda:
-    torch.cuda.manual_seed(args.seed)
+# summary_writer = SummaryWriter()
 
-summary_writer = SummaryWriter()
-
-model = RN(args)
+model = RN()
+relation_type='binary'
+epochs=20
   
 model_dirs = './model'
-bs = args.batch_size
+bs = 64
 input_img = torch.FloatTensor(bs, 3, 75, 75)
 input_qst = torch.FloatTensor(bs, 11)
 label = torch.LongTensor(bs)
 
-if args.cuda:
+if torch.cuda.is_available():
     model.cuda()
     input_img = input_img.cuda()
     input_qst = input_qst.cuda()
@@ -118,36 +121,36 @@ def train(epoch, rel, norel):
         acc_norels.append(accuracy_norel.item())
         l_unary.append(loss_unary.item())
 
-        if batch_idx % args.log_interval == 0:
-            print('Train Epoch: {} [{}/{} ({:.0f}%)] '
-                  'Relations accuracy: {:.0f}% | Non-relations accuracy: {:.0f}%'.format(
-                   epoch,
-                   batch_idx * bs * 2,
-                   len(rel[0]) * 2,
-                   100. * batch_idx * bs / len(rel[0]),
-                   #accuracy_ternary,
-                   accuracy_rel,
-                   accuracy_norel))
+        # if batch_idx % 10 == 0:
+        #     print('Train Epoch: {} [{}/{} ({:.0f}%)] '
+        #           'Relations accuracy: {:.0f}% | Non-relations accuracy: {:.0f}%'.format(
+        #            epoch,
+        #            batch_idx * bs * 2,
+        #            len(rel[0]) * 2,
+        #            100. * batch_idx * bs / len(rel[0]),
+        #            #accuracy_ternary,
+        #            accuracy_rel,
+        #            accuracy_norel))
         
     #avg_acc_ternary = sum(acc_ternary) / len(acc_ternary)
     avg_acc_binary = sum(acc_rels) / len(acc_rels)
     avg_acc_unary = sum(acc_norels) / len(acc_norels)
 
-    summary_writer.add_scalars('Accuracy/train', {
-        #'ternary': avg_acc_ternary,
-        'binary': avg_acc_binary,
-        'unary': avg_acc_unary
-    }, epoch)
+    # summary_writer.add_scalars('Accuracy/train', {
+    #     #'ternary': avg_acc_ternary,
+    #     'binary': avg_acc_binary,
+    #     'unary': avg_acc_unary
+    # }, epoch)
 
    # avg_loss_ternary = sum(l_ternary) / len(l_ternary)
     avg_loss_binary = sum(l_binary) / len(l_binary)
     avg_loss_unary = sum(l_unary) / len(l_unary)
 
-    summary_writer.add_scalars('Loss/train', {
-        #'ternary': avg_loss_ternary,
-        'binary': avg_loss_binary,
-        'unary': avg_loss_unary
-    }, epoch)
+    # summary_writer.add_scalars('Loss/train', {
+    #     #'ternary': avg_loss_ternary,
+    #     'binary': avg_loss_binary,
+    #     'unary': avg_loss_unary
+    # }, epoch)
 
     # return average accuracy
     #return avg_acc_ternary, avg_acc_binary, avg_acc_unary
@@ -192,21 +195,21 @@ def test(epoch, rel, norel):
     accuracy_norel = sum(accuracy_norels) / len(accuracy_norels)
     print('\n Test set: Binary accuracy: {:.0f}% | Unary accuracy: {:.0f}%\n'.format(accuracy_rel, accuracy_norel))
 
-    summary_writer.add_scalars('Accuracy/test', {
-        #'ternary': accuracy_ternary,
-        'binary': accuracy_rel,
-        'unary': accuracy_norel
-    }, epoch)
+    # summary_writer.add_scalars('Accuracy/test', {
+    #     #'ternary': accuracy_ternary,
+    #     'binary': accuracy_rel,
+    #     'unary': accuracy_norel
+    # }, epoch)
 
     #loss_ternary = sum(loss_ternary) / len(loss_ternary)
     loss_binary = sum(loss_binary) / len(loss_binary)
     loss_unary = sum(loss_unary) / len(loss_unary)
 
-    summary_writer.add_scalars('Loss/test', {
-        #'ternary': loss_ternary,
-        'binary': loss_binary,
-        'unary': loss_unary
-    }, epoch)
+    # summary_writer.add_scalars('Loss/test', {
+    #     #'ternary': loss_ternary,
+    #     'binary': loss_binary,
+    #     'unary': loss_unary
+    # }, epoch)
 
     # return accuracy_ternary, accuracy_rel, accuracy_norel
     return accuracy_rel, accuracy_norel
@@ -214,8 +217,8 @@ def test(epoch, rel, norel):
     
 def load_data():
     print('loading data...')
-    dirs = './data'
-    filename = os.path.join(dirs,'sort-of-clevr.pickle')
+    dirs = './sort_of_clevr/'
+    filename = os.path.join(dirs,'sort_of_clevr.pkl')
     with open(filename, 'rb') as f:
       train_datasets, test_datasets = pickle.load(f)
     # ternary_train = []
@@ -250,33 +253,40 @@ def load_data():
     
 
 rel_train, rel_test, norel_train, norel_test = load_data()
+img, relq, noq = rel_train[0]
+# print("img",img.shape)
+# print("relq",len(relq))
+# print("noq",noq)
+
 
 try:
     os.makedirs(model_dirs)
 except:
     print('directory {} already exists'.format(model_dirs))
 
-if args.resume:
-    filename = os.path.join(model_dirs, args.resume)
-    if os.path.isfile(filename):
-        print('==> loading checkpoint {}'.format(filename))
-        checkpoint = torch.load(filename)
-        model.load_state_dict(checkpoint)
-        print('==> loaded checkpoint {}'.format(filename))
+# if args.resume:
+#     filename = os.path.join(model_dirs, args.resume)
+#     if os.path.isfile(filename):
+#         print('==> loading checkpoint {}'.format(filename))
+#         checkpoint = torch.load(filename)
+#         model.load_state_dict(checkpoint)
+#         print('==> loaded checkpoint {}'.format(filename))
 
-with open(f'./{args.model}_{args.seed}_log.csv', 'w') as log_file:
-    csv_writer = csv.writer(log_file, delimiter=',')
-    csv_writer.writerow(['epoch', 'train_acc_rel',
-                     'train_acc_norel', 'test_acc_rel', 'test_acc_norel'])
+# with open(f'./{args.model}_{args.seed}_log.csv', 'w') as log_file:
+#     csv_writer = csv.writer(log_file, delimiter=',')
+#     csv_writer.writerow(['epoch', 'train_acc_rel',
+#                      'train_acc_norel', 'test_acc_rel', 'test_acc_norel'])
 
-    print(f"Training {args.model} {f'({args.relation_type})' if args.model == 'RN' else ''} model...")
+print(f"Training {model} {f'({relation_type})'}")
 
-    for epoch in range(1, args.epochs + 1):
-        train_acc_binary, train_acc_unary = train(
-            epoch, rel_train, norel_train)
-        test_acc_binary, test_acc_unary = test(
-            epoch,rel_test, norel_test)
+for epoch in range(1,epochs + 1):
+    train_acc_binary, train_acc_unary = train(
+        epoch, rel_train, norel_train)
+    print("train_acc_binary ",train_acc_binary)
+    print("train_acc_unary",train_acc_unary)
+    test_acc_binary, test_acc_unary = test(
+        epoch,rel_test, norel_test)
 
-        csv_writer.writerow([epoch, train_acc_binary,
-                         train_acc_unary, test_acc_binary, test_acc_unary])
-        model.save_model(epoch)
+    # csv_writer.writerow([epoch, train_acc_binary,
+    #                  train_acc_unary, test_acc_binary, test_acc_unary])
+    model.save_model(epoch)
