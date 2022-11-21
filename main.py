@@ -15,7 +15,7 @@ import torch
 from torch.utils.tensorboard import SummaryWriter
 from torch.autograd import Variable
 
-from model import RN, CNN_MLP
+from model import RN
 
 
 # Training settings
@@ -44,7 +44,7 @@ if args.cuda:
 
 summary_writer = SummaryWriter()
 
-model = RN(args)
+model = RN()
   
 model_dirs = './model'
 bs = args.batch_size

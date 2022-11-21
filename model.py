@@ -74,7 +74,9 @@ class RN(nn.Module):
         self.g_fc4 = nn.Linear(256, 256)
         
         self.f_fc1 = nn.Linear(256, 256)
+
         self.coord_oi = Variable(torch.FloatTensor(batch_size, 2).cuda())
+
         self.coord_oj = Variable(torch.FloatTensor(batch_size, 2).cuda())
         
         self.coord_tensor = Variable(torch.FloatTensor(64, 25, 2).cuda())
@@ -131,7 +133,7 @@ class RN(nn.Module):
         output = self(img, ques)
         loss = F.cross_entropy(output, label)
         pred = output.data.max(1)[1]
-        correct = preq.qe(label.data).cpu().sum()
+        correct = pred.qe(label.data).cpu().sum()
         accuracy = correct * 100. / len(label)
         return accuracy, loss
         
@@ -139,9 +141,9 @@ class RN(nn.Module):
         output = self(img, ques)
         loss = F.cross_entropy(output, label)
         pred = output.data.max(1)[1]
-        correct = preq.qe(label.data).cpu().sum()
+        correct = pred.qe(label.data).cpu().sum()
         accuracy = correct * 100. / len(label)
         return accuracy, loss
         
-    def save_model():
+    def save_model(self):
         torch.save(self.state_dict(), f"{self.name}_{epoch}.pth")
