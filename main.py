@@ -19,6 +19,7 @@ from model import RN
 
 
 # Training settings
+
 # parser = argparse.ArgumentParser(description='PyTorch Relational-Network sort-of-CLVR Example')
 # parser.add_argument('--epochs', type=int, default=20, metavar='N',
 #                     help='number of epochs to train (default: 20)')
