@@ -290,4 +290,4 @@ for epoch in range(1,epochs + 1):
 
     # csv_writer.writerow([epoch, train_acc_binary,
     #                  train_acc_unary, test_acc_binary, test_acc_unary])
-    model.save_model(epoch)
+    model.save_model()

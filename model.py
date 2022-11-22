@@ -59,7 +59,7 @@ class FCBlock(nn.Module):
         x = F.dropout(x)
         x = self.fc3(x)
         
-        return x
+        return F.log_softmax(x, dim=1)
         
 class RN(nn.Module):
     def __init__(self, batch_size=64):
@@ -131,7 +131,7 @@ class RN(nn.Module):
     def train_(self, img, ques, label):
         self.optimizer.zero_grad()
         output = self(img, ques)
-        loss = F.cross_entropy(output, label)
+        loss = F.nll_loss(output, label)
         pred = output.data.max(1)[1]
         correct = pred.eq(label.data).cpu().sum()
         accuracy = correct * 100. / len(label)
@@ -139,12 +139,12 @@ class RN(nn.Module):
         
     def test_(self, img, ques, label):
         output = self(img, ques)
-        loss = F.cross_entropy(output, label)
+        loss = F.nll_loss(output, label)
         pred = output.data.max(1)[1]
         correct = pred.eq(label.data).cpu().sum()
         accuracy = correct * 100. / len(label)
         return accuracy, loss
 
         
-    def save_model(self,epoch):
-        torch.save(self.state_dict(), f"{self.name}_{epoch}.pth")
+    def save_model(self):
+        torch.save(self.state_dict(), f"{self.name}.pth")
