@@ -8,7 +8,7 @@ def translate(data_entry, colors=['red', 'green', 'blue', 'orange', 'gray', 'yel
   data_entry(tuple): A single row in a dataset
   """
   image, (rel_questions, rel_answers), (norel_questions, norel_answers) = data_entry
-  questions = rel_questions + norel_questions
+  questions =  rel_questions + norel_questions
   answers = rel_answers + norel_answers
   
   for question, answer in zip(questions, answers):

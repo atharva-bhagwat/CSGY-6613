@@ -3,53 +3,20 @@ Pytorch implementation of "A simple neural network module for relational reasoni
 Code is based on pytorch/examples/mnist (https://github.com/pytorch/examples/tree/master/mnist)
 """""""""
 from __future__ import print_function
-# import argparse
 import os
-#import cPickle as pickle
 import pickle
 import random
 import numpy as np
-# import csv
 
 import torch
-# from torch.utils.tensorboard import SummaryWriter
 from torch.autograd import Variable
 
 from model import RN
-
-
-# Training settings
-
-# parser = argparse.ArgumentParser(description='PyTorch Relational-Network sort-of-CLVR Example')
-# parser.add_argument('--epochs', type=int, default=20, metavar='N',
-#                     help='number of epochs to train (default: 20)')
-# parser.add_argument('--lr', type=float, default=0.0001, metavar='LR',
-#                     help='learning rate (default: 0.0001)')
-# parser.add_argument('--no-cuda', action='store_true', default=False,
-#                     help='disables CUDA training')
-# parser.add_argument('--seed', type=int, default=1, metavar='S',
-#                     help='random seed (default: 1)')
-# parser.add_argument('--log-interval', type=int, default=10, metavar='N',
-#                     help='how many batches to wait before logging training status')
-# parser.add_argument('--resume', type=str,
-#                     help='resume from model stored')
-# # parser.add_argument('--relation-type', type=str, default='binary',
-# #                     help='what kind of relations to learn. options: binary, ternary (default: binary)')
-# parser.add_argument('--batch-size', type=int, default=64, metavar='N',
-#                     help='input batch size for training (default: 64)')
-# args = parser.parse_args()
-# args.cuda = not args.no_cuda and torch.cuda.is_available()
-
-# torch.manual_seed(args.seed)
-# if args.cuda:
-#     torch.cuda.manual_seed(args.seed)
-
-# summary_writer = SummaryWriter()
+from util import translate
 
 model = RN()
 relation_type='binary'
 epochs=20
-  
 model_dirs = './model'
 bs = 64
 input_img = torch.FloatTensor(bs, 3, 75, 75)
@@ -90,28 +57,20 @@ def train(epoch, rel, norel):
         print('Not equal length for relation dataset and non-relation dataset.')
         return
     
-   # random.shuffle(ternary)
+
     random.shuffle(rel)
     random.shuffle(norel)
 
-   # ternary = cvt_data_axis(ternary)
     rel = cvt_data_axis(rel)
     norel = cvt_data_axis(norel)
 
-    #acc_ternary = []
     acc_rels = []
     acc_norels = []
 
-    #l_ternary = []
     l_binary = []
     l_unary = []
 
     for batch_idx in range(len(rel[0]) // bs):
-        # tensor_data(ternary, batch_idx)
-        # accuracy_ternary, loss_ternary = model.train_(input_img, input_qst, label)
-        # acc_ternary.append(accuracy_ternary.item())
-        # l_ternary.append(loss_ternary.item())
-
         tensor_data(rel, batch_idx)
         accuracy_rel, loss_binary = model.train_(input_img, input_qst, label)
         acc_rels.append(accuracy_rel.item())
@@ -122,40 +81,14 @@ def train(epoch, rel, norel):
         acc_norels.append(accuracy_norel.item())
         l_unary.append(loss_unary.item())
 
-        # if batch_idx % 10 == 0:
-        #     print('Train Epoch: {} [{}/{} ({:.0f}%)] '
-        #           'Relations accuracy: {:.0f}% | Non-relations accuracy: {:.0f}%'.format(
-        #            epoch,
-        #            batch_idx * bs * 2,
-        #            len(rel[0]) * 2,
-        #            100. * batch_idx * bs / len(rel[0]),
-        #            #accuracy_ternary,
-        #            accuracy_rel,
-        #            accuracy_norel))
-        
-    #avg_acc_ternary = sum(acc_ternary) / len(acc_ternary)
+
     avg_acc_binary = sum(acc_rels) / len(acc_rels)
     avg_acc_unary = sum(acc_norels) / len(acc_norels)
 
-    # summary_writer.add_scalars('Accuracy/train', {
-    #     #'ternary': avg_acc_ternary,
-    #     'binary': avg_acc_binary,
-    #     'unary': avg_acc_unary
-    # }, epoch)
-
-   # avg_loss_ternary = sum(l_ternary) / len(l_ternary)
     avg_loss_binary = sum(l_binary) / len(l_binary)
     avg_loss_unary = sum(l_unary) / len(l_unary)
 
-    # summary_writer.add_scalars('Loss/train', {
-    #     #'ternary': avg_loss_ternary,
-    #     'binary': avg_loss_binary,
-    #     'unary': avg_loss_unary
-    # }, epoch)
-
-    # return average accuracy
-    #return avg_acc_ternary, avg_acc_binary, avg_acc_unary
-    return avg_acc_binary, avg_acc_unary
+    return avg_acc_binary, avg_acc_unary, avg_loss_binary, avg_loss_unary
 
 def test(epoch, rel, norel):
     model.eval()
@@ -163,23 +96,17 @@ def test(epoch, rel, norel):
         print('Not equal length for relation dataset and non-relation dataset.')
         return
     
-   # ternary = cvt_data_axis(ternary)
+
     rel = cvt_data_axis(rel)
     norel = cvt_data_axis(norel)
 
-    #accuracy_ternary = []
     accuracy_rels = []
     accuracy_norels = []
 
-    #loss_ternary = []
     loss_binary = []
     loss_unary = []
 
     for batch_idx in range(len(rel[0]) // bs):
-        # tensor_data(ternary, batch_idx)
-        # acc_ter, l_ter = model.test_(input_img, input_qst, label)
-        # accuracy_ternary.append(acc_ter.item())
-        # loss_ternary.append(l_ter.item())
 
         tensor_data(rel, batch_idx)
         acc_bin, l_bin = model.test_(input_img, input_qst, label)
@@ -191,29 +118,13 @@ def test(epoch, rel, norel):
         accuracy_norels.append(acc_un.item())
         loss_unary.append(l_un.item())
 
-   # accuracy_ternary = sum(accuracy_ternary) / len(accuracy_ternary)
     accuracy_rel = sum(accuracy_rels) / len(accuracy_rels)
     accuracy_norel = sum(accuracy_norels) / len(accuracy_norels)
-    print('\n Test set: Binary accuracy: {:.0f}% | Unary accuracy: {:.0f}%\n'.format(accuracy_rel, accuracy_norel))
 
-    # summary_writer.add_scalars('Accuracy/test', {
-    #     #'ternary': accuracy_ternary,
-    #     'binary': accuracy_rel,
-    #     'unary': accuracy_norel
-    # }, epoch)
-
-    #loss_ternary = sum(loss_ternary) / len(loss_ternary)
     loss_binary = sum(loss_binary) / len(loss_binary)
     loss_unary = sum(loss_unary) / len(loss_unary)
 
-    # summary_writer.add_scalars('Loss/test', {
-    #     #'ternary': loss_ternary,
-    #     'binary': loss_binary,
-    #     'unary': loss_unary
-    # }, epoch)
-
-    # return accuracy_ternary, accuracy_rel, accuracy_norel
-    return accuracy_rel, accuracy_norel
+    return accuracy_rel, accuracy_norel, loss_binary, loss_unary
 
     
 def load_data():
@@ -222,8 +133,7 @@ def load_data():
     filename = os.path.join(dirs,'sort_of_clevr.pkl')
     with open(filename, 'rb') as f:
       train_datasets, test_datasets = pickle.load(f)
-    # ternary_train = []
-    # ternary_test = []
+
     rel_train = []
     rel_test = []
     norel_train = []
@@ -231,10 +141,9 @@ def load_data():
     print('processing data...')
 
     for img, relations, norelations in train_datasets:
-        # img -> 75(i)*75(j)*3 => 3*75(j)*75(i)
+
         img = np.swapaxes(img, 0, 2)
-        # for qst, ans in zip(ternary[0], ternary[1]):
-        #     ternary_train.append((img,qst,ans))
+
         for qst,ans in zip(relations[0], relations[1]):
             rel_train.append((img,qst,ans))
         for qst,ans in zip(norelations[0], norelations[1]):
@@ -242,52 +151,46 @@ def load_data():
 
     for img, relations, norelations in test_datasets:
         img = np.swapaxes(img, 0, 2)
-        # for qst, ans in zip(ternary[0], ternary[1]):
-        #     ternary_test.append((img, qst, ans))
+
         for qst,ans in zip(relations[0], relations[1]):
             rel_test.append((img,qst,ans))
         for qst,ans in zip(norelations[0], norelations[1]):
             norel_test.append((img,qst,ans))
     
-    # return (ternary_train, ternary_test, rel_train, rel_test, norel_train, norel_test)
     return (rel_train, rel_test, norel_train, norel_test)
     
+def predict(rel_train, rel_test, norel_train, norel_test):
+  dataset=[]
 
-rel_train, rel_test, norel_train, norel_test = load_data()
-img, relq, noq = rel_train[0]
-# print("img",img.shape)
-# print("relq",len(relq))
-# print("noq",noq)
-
-
-try:
+  try:
     os.makedirs(model_dirs)
-except:
+  except:
     print('directory {} already exists'.format(model_dirs))
 
-# if args.resume:
-#     filename = os.path.join(model_dirs, args.resume)
-#     if os.path.isfile(filename):
-#         print('==> loading checkpoint {}'.format(filename))
-#         checkpoint = torch.load(filename)
-#         model.load_state_dict(checkpoint)
-#         print('==> loaded checkpoint {}'.format(filename))
+  #print(f"Training {model} {f'({relation_type})'}")
 
-# with open(f'./{args.model}_{args.seed}_log.csv', 'w') as log_file:
-#     csv_writer = csv.writer(log_file, delimiter=',')
-#     csv_writer.writerow(['epoch', 'train_acc_rel',
-#                      'train_acc_norel', 'test_acc_rel', 'test_acc_norel'])
-
-print(f"Training {model} {f'({relation_type})'}")
-
-for epoch in range(1,epochs + 1):
-    train_acc_binary, train_acc_unary = train(
+  for epoch in range(1,2):
+    print("Epoch: ",epoch,"/",epochs)
+    train_acc_binary, train_acc_unary,train_loss_binary, train_loss_unary = train(
         epoch, rel_train, norel_train)
-    print("train_acc_binary ",train_acc_binary)
-    print("train_acc_unary",train_acc_unary)
-    test_acc_binary, test_acc_unary = test(
+    print('\nTrain set: Binary accuracy: {:.0f}% | Unary accuracy: {:.0f}% | Binary loss: {:.0f}% | Unary loss: {:.0f}%'
+    .format(train_acc_binary, train_acc_unary,train_loss_binary, train_loss_unary))
+    test_acc_binary, test_acc_unary, test_loss_binary, train_loss_unary = test(
         epoch,rel_test, norel_test)
+    print('Test set: Binary accuracy: {:.0f}% | Unary accuracy: {:.0f}% | Binary loss: {:.0f}% | Unary loss: {:.0f}%\n'
+    .format(test_acc_binary, test_acc_unary, test_loss_binary, train_loss_unary))
 
-    # csv_writer.writerow([epoch, train_acc_binary,
-    #                  train_acc_unary, test_acc_binary, test_acc_unary])
-    model.save_model()
+rel_train, rel_test, norel_train, norel_test = load_data()
+dataset=[]
+predict(rel_train, rel_test, norel_train, norel_test)
+
+
+for i in range(len(rel_train)):
+  image,rel_ques,rel_ans=rel_train[i]
+  _,norel_ques,norel_ans=norel_train[i]
+  print(rel_ques,rel_ans)
+  print("------------")
+  print(norel_ques,norel_ans)
+  translate([image,(rel_ques,rel_ans),(norel_ques,norel_ans)])
+
+model.save_model()

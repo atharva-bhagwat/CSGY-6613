@@ -147,4 +147,4 @@ class RN(nn.Module):
 
         
     def save_model(self):
-        torch.save(self.state_dict(), f"{self.name}.pth")
+        torch.save(self.state_dict(), f"./model/{self.name}.pth")
