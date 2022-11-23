@@ -5,16 +5,6 @@ import torch.optim as optim
 import numpy as np
 from torch.autograd import Variable
 
-def cvt_coord(i):
-    return [(i/5-2)/2., (i%5-2)/2.]
-    
-def get_coord():
-    np_coord_tensor = np.zeros((64, 25, 2))
-    for i in range(25):
-        np_coord_tensor[:,i,:] = np.array(cvt_coord(i))
-        
-    return np_coord_tensor
-
 class ConvBlock(nn.Module):
     def __init__(self):
         super(ConvBlock, self).__init__()
@@ -61,10 +51,38 @@ class FCBlock(nn.Module):
         
         return F.log_softmax(x, dim=1)
         
-class RN(nn.Module):
+class BasicBlock(nn.Module):
+    def __init__(self):
+        super(BasicBlock, self).__init__()
+        self.name = 'RN'
+    
+    def train_(self, img, ques, label):
+        self.optimizer.zero_grad()
+        output = self(img, ques)
+        loss = F.nll_loss(output, label)
+        pred = output.data.max(1)[1]
+        correct = pred.eq(label.data).cpu().sum()
+        accuracy = correct * 100. / len(label)
+        return accuracy, loss
+        
+    def test_(self, img, ques, label):
+        output = self(img, ques)
+        loss = F.nll_loss(output, label)
+        pred = output.data.max(1)[1]
+        correct = pred.eq(label.data).cpu().sum()
+        accuracy = correct * 100. / len(label)
+        return accuracy, loss
+        
+    def pred_(self, img, ques):
+        output = self(img, ques)
+        return output.data.max(1)[1]
+        
+    def save_model(self):
+        torch.save(self.state_dict(), f"./model/{self.name}.pth")
+        
+class RN(BasicBlock):
     def __init__(self, batch_size=64):
         super(RN, self).__init__()
-        self.name = 'RN'
         
         self.conv = ConvBlock()
         
@@ -75,12 +93,26 @@ class RN(nn.Module):
         
         self.f_fc1 = nn.Linear(256, 256)
 
-        self.coord_oi = Variable(torch.FloatTensor(batch_size, 2).cuda())
-
-        self.coord_oj = Variable(torch.FloatTensor(batch_size, 2).cuda())
+        self.coord_oi = Variable(torch.FloatTensor(batch_size, 2))
+        self.coord_oj = Variable(torch.FloatTensor(batch_size, 2))
+        self.coord_tensor = Variable(torch.FloatTensor(batch_size, 25, 2))
         
-        self.coord_tensor = Variable(torch.FloatTensor(64, 25, 2).cuda())
-        self.coord_tensor.data.copy_(torch.from_numpy(get_coord()))
+        self.coord_oi = self.coord_oi.cuda()
+        self.coord_oj = self.coord_oj.cuda()
+        self.coord_tensor = self.coord_tensor.cuda()
+        
+        self.coord_oi = Variable(self.coord_oi)
+        self.coord_oj = Variable(self.coord_oj)
+        self.coord_tensor = Variable(self.coord_tensor)
+        
+        def cvt_coord(i):
+            return [(i/5-2)/2., (i%5-2)/2.]
+        
+        np_coord_tensor = np.zeros((batch_size, 25, 2))
+        for i in range(25):
+            np_coord_tensor[:,i,:] = np.array(cvt_coord(i))
+        
+        self.coord_tensor.data.copy_(torch.from_numpy(np_coord_tensor))
         
         self.fcout = FCBlock()
         
@@ -127,24 +159,3 @@ class RN(nn.Module):
         x_f = F.relu(x_g)
         
         return self.fcout(x_f)
-        
-    def train_(self, img, ques, label):
-        self.optimizer.zero_grad()
-        output = self(img, ques)
-        loss = F.nll_loss(output, label)
-        pred = output.data.max(1)[1]
-        correct = pred.eq(label.data).cpu().sum()
-        accuracy = correct * 100. / len(label)
-        return accuracy, loss
-        
-    def test_(self, img, ques, label):
-        output = self(img, ques)
-        loss = F.nll_loss(output, label)
-        pred = output.data.max(1)[1]
-        correct = pred.eq(label.data).cpu().sum()
-        accuracy = correct * 100. / len(label)
-        return accuracy, loss
-
-        
-    def save_model(self):
-        torch.save(self.state_dict(), f"./model/{self.name}.pth")

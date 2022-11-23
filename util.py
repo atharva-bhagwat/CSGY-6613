@@ -8,22 +8,23 @@ def translate(data_entry, colors=['red', 'green', 'blue', 'orange', 'gray', 'yel
   Args:
   data_entry(tuple): A single row in a dataset
   Format for data_entry:
-  image, (rel_questions, rel_answers), (norel_questions, norel_answers) = data_entry
+  image, (rel_questions, rel_answers, rel_pred), (norel_questions, norel_answers, norel_pred) = data_entry
   
   - image: np.array
-  - rel_questions and norel_questions: np.array
-  - rel_answers and norel_answers: int
+  - rel_question and norel_question: np.array
+  - rel_answers, norel_answer, rel_pred, and norel_pred: int
   """
-  image, (rel_questions, rel_answers), (norel_questions, norel_answers) = data_entry
+  image, (rel_question, rel_answer, rel_pred), (norel_question, norel_answer, norel_pred) = data_entry
 
   image = np.swapaxes(image, 0, 2)
   image = image * 255
   image = cv2.resize(image, (512, 512))
 
-  questions = [rel_questions, norel_questions]
-  answers = [rel_answers, norel_answers]
+  questions = [rel_question, norel_question]
+  answers = [rel_answer, norel_answer]
+  pred_answers = [rel_pred, norel_pred]
 
-  for question, answer in zip(questions, answers):
+  for question, answer, pred_answer in zip(questions, answers, pred_answers):
     query = []
     query.append(colors[question.tolist()[0:6].index(1)])
     if question[6] == 1:
@@ -42,5 +43,6 @@ def translate(data_entry, colors=['red', 'green', 'blue', 'orange', 'gray', 'yel
         query.append('count?')
 
     answer = answer_format[answer]
-    print(f'Question: {" ".join(query)}\nAnswer: {answer}')
+    pred_answer = answer_format[pred_answer]
+    print(f'Question: {" ".join(query)}\nAnswer: {answer}\nPredicted Answer: {pred_answer}')
     cv2_imshow(image)
