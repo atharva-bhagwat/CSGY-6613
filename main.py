@@ -169,7 +169,7 @@ def predict(rel_train, rel_test, norel_train, norel_test):
 
   #print(f"Training {model} {f'({relation_type})'}")
 
-  for epoch in range(1,2):
+  for epoch in range(1,1+1):
     print("Epoch: ",epoch,"/",epochs)
     train_acc_binary, train_acc_unary,train_loss_binary, train_loss_unary = train(
         epoch, rel_train, norel_train)
@@ -181,16 +181,14 @@ def predict(rel_train, rel_test, norel_train, norel_test):
     .format(test_acc_binary, test_acc_unary, test_loss_binary, train_loss_unary))
 
 rel_train, rel_test, norel_train, norel_test = load_data()
-dataset=[]
 predict(rel_train, rel_test, norel_train, norel_test)
-
 
 for i in range(len(rel_train)):
   image,rel_ques,rel_ans=rel_train[i]
   _,norel_ques,norel_ans=norel_train[i]
-  print(rel_ques,rel_ans)
-  print("------------")
-  print(norel_ques,norel_ans)
+  # print(rel_ques,rel_ans)
+  # print("------------")
+  # print(norel_ques,norel_ans)
   translate([image,(rel_ques,rel_ans),(norel_ques,norel_ans)])
 
 model.save_model()
