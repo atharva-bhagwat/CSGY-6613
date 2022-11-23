@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-import numpy as np
 from torch.autograd import Variable
+import numpy as np
 
 class ConvBlock(nn.Module):
     def __init__(self):
@@ -56,21 +56,23 @@ class BasicBlock(nn.Module):
         super(BasicBlock, self).__init__()
         self.name = 'RN'
     
-    def train_(self, img, ques, label):
+    def train_(self, img, ques, ans):
         self.optimizer.zero_grad()
         output = self(img, ques)
-        loss = F.nll_loss(output, label)
+        loss = F.nll_loss(output, ans)
+        loss.backward()
+        self.optimizer.step()
         pred = output.data.max(1)[1]
-        correct = pred.eq(label.data).cpu().sum()
-        accuracy = correct * 100. / len(label)
+        correct = pred.eq(ans.data).cpu().sum()
+        accuracy = correct * 100. / len(ans)
         return accuracy, loss
         
-    def test_(self, img, ques, label):
+    def test_(self, img, ques, ans):
         output = self(img, ques)
-        loss = F.nll_loss(output, label)
+        loss = F.nll_loss(output, ans)
         pred = output.data.max(1)[1]
-        correct = pred.eq(label.data).cpu().sum()
-        accuracy = correct * 100. / len(label)
+        correct = pred.eq(ans.data).cpu().sum()
+        accuracy = correct * 100. / len(ans)
         return accuracy, loss
         
     def pred_(self, img, ques):
@@ -93,9 +95,9 @@ class RN(BasicBlock):
         
         self.f_fc1 = nn.Linear(256, 256)
 
-        self.coord_oi = Variable(torch.FloatTensor(batch_size, 2))
-        self.coord_oj = Variable(torch.FloatTensor(batch_size, 2))
-        self.coord_tensor = Variable(torch.FloatTensor(batch_size, 25, 2))
+        self.coord_oi = torch.FloatTensor(batch_size, 2)
+        self.coord_oj = torch.FloatTensor(batch_size, 2)
+        self.coord_tensor = torch.FloatTensor(batch_size, 25, 2)
         
         self.coord_oi = self.coord_oi.cuda()
         self.coord_oj = self.coord_oj.cuda()
@@ -143,6 +145,7 @@ class RN(BasicBlock):
         x_full = torch.cat([x_i, x_j], 3)
         # print("x_full ", x_full.view(mb * (d*d) * (d*d), 63))
         x_ = x_full.view(mb * (d*d) * (d*d), 63)
+        
         x_ = self.g_fc1(x_)
         x_ = F.relu(x_)
         x_ = self.g_fc2(x_)
@@ -156,6 +159,6 @@ class RN(BasicBlock):
         x_g = x_g.sum(1).squeeze()
         
         x_f = self.f_fc1(x_g)
-        x_f = F.relu(x_g)
+        x_f = F.relu(x_f)
         
         return self.fcout(x_f)

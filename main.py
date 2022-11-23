@@ -1,19 +1,19 @@
 import os
-import gc
 import random
 import pickle
 import torch
+import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 from torch.autograd import Variable
 from model import RN
 from util import translate
 
-gc.collect()
-torch.cuda.empty_cache()
+torch.manual_seed(42)
+torch.cuda.manual_seed(42)
 
 BATCH_SIZE = 64
-EPOCHS = 20
+EPOCHS = 50
 
 model = RN()
 
@@ -29,9 +29,9 @@ input_ans = input_ans.cuda()
 input_img = Variable(input_img)
 input_qst = Variable(input_qst)
 input_ans = Variable(input_ans)
-        
-def setup_dir():
-    os.makedirs("model", exist_ok=True)
+
+os.makedirs("model", exist_ok=True)
+os.makedirs("output", exist_ok=True)
     
 def load_data(folder="sort_of_clevr", filename="sort_of_clevr.pkl"):
     path = os.path.join(folder, filename)
@@ -97,14 +97,14 @@ def train(rel_data, norel_data):
         tensor_data(rel_data, batch_idx)
         acc, loss = model.train_(input_img, input_qst, input_ans)
         
-        acc_rel += acc
-        loss_rel += loss
+        acc_rel += acc.item()
+        loss_rel += loss.item()
         
         tensor_data(norel_data, batch_idx)
         acc, loss = model.train_(input_img, input_qst, input_ans)
         
-        acc_norel += acc
-        loss_norel += loss
+        acc_norel += acc.item()
+        loss_norel += loss.item()
         
     acc_rel /= len(rel_data[0]) // BATCH_SIZE
     loss_rel /= len(rel_data[0]) // BATCH_SIZE
@@ -130,24 +130,34 @@ def test(rel_data, norel_data):
         tensor_data(rel_data, batch_idx)
         acc, loss = model.test_(input_img, input_qst, input_ans)
         
-        acc_rel += acc
-        loss_rel += loss
+        acc_rel += acc.item()
+        loss_rel += loss.item()
         
         tensor_data(norel_data, batch_idx)
         acc, loss = model.test_(input_img, input_qst, input_ans)
         
-        acc_norel += acc
-        loss_norel += loss
+        acc_norel += acc.item()
+        loss_norel += loss.item()
         
-    acc_rel /= len(rel_data[0])
-    loss_rel /= len(rel_data[0])
+    acc_rel /= len(rel_data[0]) // BATCH_SIZE
+    loss_rel /= len(rel_data[0]) // BATCH_SIZE
     
-    acc_norel /= len(rel_data[0])
-    loss_norel /= len(rel_data[0])
+    acc_norel /= len(rel_data[0]) // BATCH_SIZE
+    loss_norel /= len(rel_data[0]) // BATCH_SIZE
     
     return acc_rel, acc_norel, loss_rel, loss_norel
+    
+def test_single(rel_test, norel_test, idx):
+    img, rel_qst, rel_ans = rel_test[idx]
+    _, norel_qst, norel_ans = norel_test[idx]
+    
+    rel_pred, norel_pred = predict_one(rel_test, norel_test, idx=idx)
+    
+    data_entry = (img, (rel_qst, rel_ans, rel_pred), (norel_qst, norel_ans, norel_pred))
+    
+    translate(data_entry, filename=f'test_{idx}.jpg')
 
-def predict_one(rel_data, norel_data):
+def predict_one(rel_data, norel_data, idx):
     model.eval()
     
     rel_data = cvt_data_axis(rel_data)
@@ -159,56 +169,64 @@ def predict_one(rel_data, norel_data):
     tensor_data(norel_data, 0)
     pred_norel = model.pred_(input_img, input_qst)
     
-    return pred_rel[0].cpu().numpy(), pred_norel[0].cpu().numpy()
+    return pred_rel[idx].cpu().numpy(), pred_norel[idx].cpu().numpy()
 
-def driver():
-    setup_dir()
-    
+def driver(mode):
     rel_train, rel_test, norel_train, norel_test = load_data()
-    
-    train_acc_rel = []
-    train_loss_rel = []
-    
-    train_acc_norel = []
-    train_loss_norel = []
-    
-    test_acc_rel = []
-    test_loss_rel = []
-    
-    test_acc_norel = []
-    test_loss_norel = []
-    
-    print('Training...')
-    for epoch in range(EPOCHS):
-        print(f'Epoch: {epoch+1}/{EPOCHS}')
-        acc_rel, acc_norel, loss_rel, loss_norel = train(rel_train, norel_train)
+    if mode == "train":
+        print(f'Training mode...')
+        train_acc_rel = []
+        train_loss_rel = []
         
-        train_acc_rel.append(acc_rel)
-        train_acc_norel.append(acc_norel)
-        train_loss_rel.append(loss_rel)
-        train_loss_norel.append(loss_norel)
+        train_acc_norel = []
+        train_loss_norel = []
         
-        print(f'Train Set:\n\tRelational Acc: {acc_rel}\tRelational Loss: {loss_rel}\n\tNon-Relational Acc: {acc_norel}\tNon-Relational Loss: {loss_norel}')
+        test_acc_rel = []
+        test_loss_rel = []
         
-        acc_rel, acc_norel, loss_rel, loss_norel = test(rel_test, norel_test)
+        test_acc_norel = []
+        test_loss_norel = []
         
-        test_acc_rel.append(acc_rel)
-        test_acc_norel.append(acc_norel)
-        test_loss_rel.append(loss_rel)
-        test_loss_norel.append(loss_norel)
+        for epoch in range(EPOCHS):
+            print(f'Epoch: {epoch+1}/{EPOCHS}')
+            acc_rel, acc_norel, loss_rel, loss_norel = train(rel_train, norel_train)
+            
+            train_acc_rel.append(acc_rel)
+            train_acc_norel.append(acc_norel)
+            train_loss_rel.append(loss_rel)
+            train_loss_norel.append(loss_norel)
+            
+            print(f'Train Set:\n\tRelational Acc: {acc_rel:.2f}\tRelational Loss: {loss_rel:.3f}\n\tNon-Relational Acc: {acc_norel:.2f}\tNon-Relational Loss: {loss_norel:.3f}')
+            
+            acc_rel, acc_norel, loss_rel, loss_norel = test(rel_test, norel_test)
+            
+            test_acc_rel.append(acc_rel)
+            test_acc_norel.append(acc_norel)
+            test_loss_rel.append(loss_rel)
+            test_loss_norel.append(loss_norel)
+            
+            print(f'Test Set:\n\tRelational Acc: {acc_rel:.2f}\tRelational Loss: {loss_rel:.3f}\n\tNon-Relational Acc: {acc_norel:.2f}\tNon-Relational Loss: {loss_norel:.3f}')
         
-        print(f'Test Set:\n\tRelational Acc: {acc_rel}\tRelational Loss: {loss_rel}\n\tNon-Relational Acc: {acc_norel}\tNon-Relational Loss: {loss_norel}')
+        model.save_model()
+    else:
+        print(f'Testing mode...')
+        model.load_state_dict(torch.load(os.path.join("model","RN.pth")))
+        
     
-    model.save_model()
+    # test id 0 
+    test_single(rel_test, norel_test, 0)
     
-    img, rel_qst, rel_ans = rel_test[0]
-    _, norel_qst, norel_ans = norel_test[0]
+    # test id 10 
+    test_single(rel_test, norel_test, 15)
     
-    rel_pred, norel_pred = predict_one(rel_test, norel_test)
+    # test id 20 
+    test_single(rel_test, norel_test, 30)
     
-    data_entry = (img, (rel_qst, rel_ans, rel_pred), (norel_qst, norel_ans, norel_pred))
-    
-    translate(data_entry)
+    # test id 30 
+    test_single(rel_test, norel_test, 45)
     
 if __name__ == "__main__":
-    driver()
+    parser = argparse.ArgumentParser(description="Set mode: Train/Test")
+    parser.add_argument("--mode", type=str, choices=["train","test"], default="train")
+    args = parser.parse_args()
+    driver(mode=args.mode)
