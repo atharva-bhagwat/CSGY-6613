@@ -147,6 +147,18 @@ def test(rel_data, norel_data):
     
     return acc_rel, acc_norel, loss_rel, loss_norel
     
+def generate_plot(train_data_rel, train_data_norel, test_data_rel, test_data_norel, label):
+    _ = plt.plot(range(EPOCHS), train_data_rel, '-', label=f"train_{label}_rel")
+    _ = plt.plot(range(EPOCHS), train_data_norel, '-', label=f"train_{label}_norel")
+    _ = plt.plot(range(EPOCHS), test_data_rel, '-', label=f"test_{label}_rel")
+    _ = plt.plot(range(EPOCHS), test_data_norel, '-', label=f"test_{label}_norel")
+    _ = plt.xlabel('Epoch')
+    _ = plt.ylabel(label)
+    _ = plt.grid(True)
+    _ = plt.legend()
+    _ = plt.savefig(os.path.join("output", f"{label}.jpg"))
+    print(f'{os.path.join("output", f"{label}.jpg")} saved...')
+    
 def test_single(rel_test, norel_test, idx):
     img, rel_qst, rel_ans = rel_test[idx]
     _, norel_qst, norel_ans = norel_test[idx]
@@ -206,6 +218,12 @@ def driver(mode):
             test_loss_norel.append(loss_norel)
             
             print(f'Test Set:\n\tRelational Acc: {acc_rel:.2f}\tRelational Loss: {loss_rel:.3f}\n\tNon-Relational Acc: {acc_norel:.2f}\tNon-Relational Loss: {loss_norel:.3f}')
+            
+        # generate acc plt
+        generate_plot(train_acc_rel, train_acc_norel, test_acc_rel, test_acc_norel, "acc")
+        
+        # generate loss plt
+        generate_plot(train_loss_rel, train_loss_norel, test_loss_rel, test_loss_norel, "loss")
         
         model.save_model()
     else:
