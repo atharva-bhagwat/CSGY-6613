@@ -1,5 +1,4 @@
 # Dataset
-sort_of_clevr/*
 *.pkl
 
 # Log
