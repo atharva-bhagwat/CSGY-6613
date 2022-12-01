@@ -13,7 +13,7 @@ torch.manual_seed(42)
 torch.cuda.manual_seed(42)
 
 BATCH_SIZE = 64
-EPOCHS = 50
+EPOCHS = 20
 
 model = RN()
 
@@ -148,15 +148,16 @@ def test(rel_data, norel_data):
     return acc_rel, acc_norel, loss_rel, loss_norel
     
 def generate_plot(train_data_rel, train_data_norel, test_data_rel, test_data_norel, label):
-    _ = plt.plot(range(EPOCHS), train_data_rel, '-', label=f"train_{label}_rel")
-    _ = plt.plot(range(EPOCHS), train_data_norel, '-', label=f"train_{label}_norel")
-    _ = plt.plot(range(EPOCHS), test_data_rel, '-', label=f"test_{label}_rel")
-    _ = plt.plot(range(EPOCHS), test_data_norel, '-', label=f"test_{label}_norel")
-    _ = plt.xlabel('Epoch')
-    _ = plt.ylabel(label)
-    _ = plt.grid(True)
-    _ = plt.legend()
-    _ = plt.savefig(os.path.join("output", f"{label}.jpg"))
+    plt.figure()
+    plt.plot(range(EPOCHS), train_data_rel, '-', label=f"train_{label}_rel")
+    plt.plot(range(EPOCHS), train_data_norel, '-', label=f"train_{label}_norel")
+    plt.plot(range(EPOCHS), test_data_rel, '-', label=f"test_{label}_rel")
+    plt.plot(range(EPOCHS), test_data_norel, '-', label=f"test_{label}_norel")
+    plt.xlabel('Epoch')
+    plt.ylabel(label)
+    plt.grid(True)
+    plt.legend()
+    plt.savefig(os.path.join("output", f"{label}.jpg"))
     print(f'{os.path.join("output", f"{label}.jpg")} saved...')
     
 def test_single(rel_test, norel_test, idx):

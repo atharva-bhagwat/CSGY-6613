@@ -12,19 +12,35 @@ Description of RN can be found [here](https://github.com/atharva-bhagwat/CSGY-66
 ### (40 points) Replicate the sort-of-CLEVR dataset result of the paper as quoted in the section 5.3. Please focus only on the CNN, augmented with RN, case.
 
 - With the [github repository](https://github.com/kimhc6028/relational-networks) as reference, we developed the model architecture, keeping the model size smaller but changing the question embedding shape(same as the paper).
-- After training the model for 20 epochs, we get the final test metrics as follows:
+- After training the model for 20 epochs, we get the final metrics as follows:
 
 **Relational Data:**
 
+On training set:
+
 | Accuracy(%) | Loss |
 |---|---|
-| 88.36 | 0.579 |
+| 90.19 | 0.223 |
+
+On testing set:
+
+| Accuracy(%) | Loss |
+|---|---|
+| 83.22 | 0.386 |
 
 **Non-Relational Data:**
 
+On training set:
+
 | Accuracy(%) | Loss |
 |---|---|
-| 99.80 | 0.011 |
+| 99.95 | 0.002 |
+
+On testing set:
+
+| Accuracy(%) | Loss |
+|---|---|
+| 99.85 | 0.003 |
 
 Entire training log can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/logs.txt).
 
@@ -49,7 +65,7 @@ Sample test output can be found [here](https://github.com/atharva-bhagwat/CSGY-6
 
 ### (40 points) Perform the “state description” task and create a table that represents the state of each image.
 
-State descriptors(as a CSV file) for the entire dataset can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/sort_of_clevr/sort_of_clevr_descriptor.csv).
+State descriptors(as a CSV file) for the entire dataset can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/sort_of_clevr/sort_of_clevr_descriptor.csv). The CSV file can be loaded as a dataframe for training purposes.
 
 Sample state descriptor for one image:
 
