@@ -9,16 +9,22 @@ np.random.seed(42)
 
 class sortOfClevr():
   def __init__(self, path="", train_size=9800, test_size=200):
+    """Initialize parameters for data generator class
 
+    Args:
+        path (str): Path to store generated dataset. Defaults to "".
+        train_size (int): Size of training set. Defaults to 9800.
+        test_size (int): Size of testing set. Defaults to 200.
+    """
     self.train_size = train_size
     self.test_size = test_size
-    self.image_size = 75
-    self.shape_size = 5
-    self.question_size = 11
-    self.question_type_idx = 6
-    self.question_subtype_idx = 8
+    self.image_size = 75  # image size 75 * 75
+    self.shape_size = 5   # size of each shape in an image (length of a square/radius of a circle)
+    self.question_size = 11 # question embedding length
+    self.question_type_idx = 6  # index for question type
+    self.question_subtype_idx = 8 # index for question sub-type
     
-    self.num_question = 10
+    self.num_question = 10  # number of questions
 
     self.color_mapping = {
       0: 'red',
@@ -42,16 +48,20 @@ class sortOfClevr():
     self.state_descriptor_filename = os.path.join(self.data_path, "sort_of_clevr_descriptor.csv")
     self.state_descriptor = pd.DataFrame(columns=['image_id','color','center','shape','area','dataset'])
 
-    self.driver()
+    self.driver() # call driver function for generation
               
   def setup_dirs(self):
+    """Helper function to setup directories
+    """
     os.makedirs(self.data_path, exist_ok=True)
       
   def get_center(self, objects):
-    """Helper function to randomly generate center points for shapes in an image.
+    """Helper function to randomly generate center points for shapes in an image
 
+    Args:
+        objects (list): List of generated shapes in the image
     Returns:
-    center(tuple): Center of shape
+        tuple: Center of shape
     """
     while True:
       flag = True
@@ -63,10 +73,11 @@ class sortOfClevr():
         return center
 
   def add_state_descriptor(self, objects, mode):
-    """Function to add an entry to the state descriptors.
+    """Function to add an entry to the state descriptors
 
     Args:
-    objects(list): List of shapes and their properties in an image
+        objects (list): List of shapes and their properties in an image
+        mode (str): train/test mode the image belongs to
     """
     image_id = uuid4()  # randomly generate an ID for a image, to save in a data-frame
     for itr_obj in objects:
@@ -82,16 +93,16 @@ class sortOfClevr():
       }, ignore_index=True)
 
   def write_state_descriptor(self):
-    """Function to save data-frame as a CSV.
+    """Function to save data-frame as a CSV
     """
     self.state_descriptor.to_csv(self.state_descriptor_filename, index=False)
       
   def build_dataset(self, mode):
     """Main function which generates an image, 10 relational questions,
-    10 non-relational questions, and answers for all the questions.
+    10 non-relational questions, and answers for all the questions
 
     Args:
-    mode(str): train/test mode
+    mode(str): train/test mode the image belongs to
     """
     # generate image with shapes of all colors
     objects = []
@@ -99,11 +110,13 @@ class sortOfClevr():
     for color_id, color in enumerate(self.colors):
       center = self.get_center(objects)
       if np.random.random() < 0.5:
+        # create a rectangle
         left_top = (center[0]-self.shape_size, center[1]-self.shape_size)
         right_bottom = (center[0]+self.shape_size, center[1]+self.shape_size)
         image = cv2.rectangle(image, left_top, right_bottom, color, -1)
         objects.append((color_id, center, 'r'))
       else:
+        # create a circle
         center_ = (center[0], center[1])
         image = cv2.circle(image, center_, self.shape_size, color, -1)
         objects.append((color_id, center, 'c'))
@@ -191,7 +204,7 @@ class sortOfClevr():
     return dataset
       
   def driver(self):
-    """Driver function which generates training set, testing set, and state descriptors.
+    """Driver function which generates training set, testing set, and state descriptors
     """
     self.setup_dirs()
 

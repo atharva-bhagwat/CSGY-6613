@@ -6,6 +6,7 @@ from torch.autograd import Variable
 import numpy as np
 
 class ConvBlock(nn.Module):
+    # Convolutional block
     def __init__(self):
         super(ConvBlock, self).__init__()
         
@@ -19,6 +20,7 @@ class ConvBlock(nn.Module):
         self.batch_norm4 = nn.BatchNorm2d(24)
         
     def forward(self, img):
+        # forward pass for conv block
         x = self.conv1(img)
         x = F.relu(x)
         x = self.batch_norm1(x)
@@ -38,12 +40,14 @@ class ConvBlock(nn.Module):
         return x
         
 class FCBlock(nn.Module):
+    # Fully connected block
     def __init__(self):
         super(FCBlock, self).__init__()
         self.fc2 = nn.Linear(256, 256)
         self.fc3 = nn.Linear(256, 10)
         
     def forward(self, x):
+        # forward pass for fc block
         x = self.fc2(x)
         x = F.relu(x)
         x = F.dropout(x)
@@ -52,6 +56,7 @@ class FCBlock(nn.Module):
         return F.log_softmax(x, dim=1)
         
 class BasicBlock(nn.Module):
+    # Base class with train, test, pred, and save model methods
     def __init__(self):
         super(BasicBlock, self).__init__()
         self.name = 'RN'
@@ -83,18 +88,19 @@ class BasicBlock(nn.Module):
         torch.save(self.state_dict(), f"./model/{self.name}.pth")
         
 class RN(BasicBlock):
+    # RN block that inherits basic block
     def __init__(self, batch_size=64):
         super(RN, self).__init__()
         
-        self.conv = ConvBlock()
+        self.conv = ConvBlock() # conv block
         
+        # g theta
         self.g_fc1 = nn.Linear((24+2)*2+11, 256)
         self.g_fc2 = nn.Linear(256, 256)
         self.g_fc3 = nn.Linear(256, 256)
         self.g_fc4 = nn.Linear(256, 256)
-        
-        self.f_fc1 = nn.Linear(256, 256)
 
+        # restructure image and question embeddings
         self.coord_oi = torch.FloatTensor(batch_size, 2)
         self.coord_oj = torch.FloatTensor(batch_size, 2)
         self.coord_tensor = torch.FloatTensor(batch_size, 25, 2)
@@ -116,20 +122,20 @@ class RN(BasicBlock):
         
         self.coord_tensor.data.copy_(torch.from_numpy(np_coord_tensor))
         
+        # f phi
+        self.f_fc1 = nn.Linear(256, 256)
         self.fcout = FCBlock()
         
+        # optimizer
         self.optimizer = optim.Adam(self.parameters(), lr=0.0001)
         
     def forward(self, img, ques):
+        # forward pass for RN
         x = self.conv(img)
-        # 64(batch) * 24 * 5 * 5
-        # print("x shape ",x.shape)
         mb = x.size()[0] # 64
         n_channels = x.size()[1] # 24
         d = x.size()[2] # 5
         x_flat = x.view(mb, n_channels, d*d).permute(0,2,1)
-        # x.view(mb, n_channels, d*d) -> (64, 24, 25)
-        # after permute -> (64, 25, 24)
         x_flat = torch.cat([x_flat, self.coord_tensor], 2)
         
         ques = torch.unsqueeze(ques, 1)
@@ -143,7 +149,6 @@ class RN(BasicBlock):
         x_j = x_j.repeat(1, 1, 25, 1)
         
         x_full = torch.cat([x_i, x_j], 3)
-        # print("x_full ", x_full.view(mb * (d*d) * (d*d), 63))
         x_ = x_full.view(mb * (d*d) * (d*d), 63)
         
         x_ = self.g_fc1(x_)

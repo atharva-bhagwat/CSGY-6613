@@ -12,15 +12,19 @@ from util import translate
 torch.manual_seed(42)
 torch.cuda.manual_seed(42)
 
+# initialize global variables
 BATCH_SIZE = 64
 EPOCHS = 20
 
+# create model object
 model = RN()
 
+# create tensors for image, question, and answer for batching
 input_img = torch.FloatTensor(BATCH_SIZE, 3, 75, 75)
 input_qst = torch.FloatTensor(BATCH_SIZE, 11)
 input_ans = torch.LongTensor(BATCH_SIZE)
 
+# load model and tensors to GPU
 model.cuda()
 input_img = input_img.cuda()
 input_qst = input_qst.cuda()
@@ -30,10 +34,21 @@ input_img = Variable(input_img)
 input_qst = Variable(input_qst)
 input_ans = Variable(input_ans)
 
+# setup directories
 os.makedirs("model", exist_ok=True)
 os.makedirs("output", exist_ok=True)
-    
+
 def load_data(folder="sort_of_clevr", filename="sort_of_clevr.pkl"):
+    """Helper function to load and restructure dataset into lists
+
+    Args:
+        folder (str): Path to dataset. Defaults to "sort_of_clevr".
+        filename (str): Pickle filename. Defaults to "sort_of_clevr.pkl".
+
+    Returns:
+        list, list, list, list: relational training data, relational testing data, 
+                                non-relational training data, non-relational testing
+    """
     path = os.path.join(folder, filename)
     with open(path, "rb") as fd:
         train, test = pickle.load(fd)
@@ -45,8 +60,10 @@ def load_data(folder="sort_of_clevr", filename="sort_of_clevr.pkl"):
     
     print('Processing data...')
     
+    # data is restructed as : [image, question, answer] for all images in training and testing set
+
     for img, rel, norel in train:
-        img = np.swapaxes(img, 0, 2)
+        img = np.swapaxes(img, 0, 2)    # swap 1st and 3rd axis
         
         for qst, ans in zip(rel[0], rel[1]):
             rel_train.append((img, qst, ans))
@@ -54,7 +71,7 @@ def load_data(folder="sort_of_clevr", filename="sort_of_clevr.pkl"):
             norel_train.append((img, qst, ans))
     
     for img, rel, norel in test:
-        img = np.swapaxes(img, 0, 2)
+        img = np.swapaxes(img, 0, 2)    # swap 1st and 3rd axis
         
         for qst, ans in zip(rel[0], rel[1]):
             rel_test.append((img, qst, ans))
@@ -64,23 +81,49 @@ def load_data(folder="sort_of_clevr", filename="sort_of_clevr.pkl"):
     return rel_train, rel_test, norel_train, norel_test
     
 def tensor_data(data, i):
+    """Helper function to generate batches
+
+    Args:
+        data (list): Training or testing set
+        i (int): Index of current pointer
+    """
     img = torch.from_numpy(np.asarray(data[0][BATCH_SIZE*i:BATCH_SIZE*(i+1)]))
     qst = torch.from_numpy(np.asarray(data[1][BATCH_SIZE*i:BATCH_SIZE*(i+1)]))
     ans = torch.from_numpy(np.asarray(data[2][BATCH_SIZE*i:BATCH_SIZE*(i+1)]))
 
+    # copy batches into tensors
     input_img.data.resize_(img.size()).copy_(img)
     input_qst.data.resize_(qst.size()).copy_(qst)
     input_ans.data.resize_(ans.size()).copy_(ans)
     
 def cvt_data_axis(data):
+    """Helper function to restructure data
+
+    Args:
+        data (int): Training or testing set
+
+    Returns:
+        tuple: tuple of lists: image, question, answer
+    """
     img = [e[0] for e in data]
     qst = [e[1] for e in data]
     ans = [e[2] for e in data]
     return (img,qst,ans)
     
 def train(rel_data, norel_data):
+    """Train method
+
+    Args:
+        rel_data (list): Training relational data
+        norel_data (list): Training non-relational data
+
+    Returns:
+        float, float, float, float: relational accuracy, non-relational accuracy,
+                                    relational loss, non-relational loss
+    """
     model.train()
     
+    # shuffle data for training
     random.shuffle(rel_data)
     random.shuffle(norel_data)
     
@@ -101,7 +144,7 @@ def train(rel_data, norel_data):
         loss_rel += loss.item()
         
         tensor_data(norel_data, batch_idx)
-        acc, loss = model.train_(input_img, input_qst, input_ans)
+        acc, loss = model.train_(input_img, input_qst, input_ans)   # pass to model
         
         acc_norel += acc.item()
         loss_norel += loss.item()
@@ -115,6 +158,16 @@ def train(rel_data, norel_data):
     return acc_rel, acc_norel, loss_rel, loss_norel
     
 def test(rel_data, norel_data):
+    """Test method
+
+    Args:
+        rel_data (list): Testing relational data
+        norel_data (list): Testing non-relational data
+
+    Returns:
+        float, float, float, float: relational accuracy, non-relational accuracy,
+                                    relational loss, non-relational loss
+    """
     model.eval()
     
     rel_data = cvt_data_axis(rel_data)
@@ -134,7 +187,7 @@ def test(rel_data, norel_data):
         loss_rel += loss.item()
         
         tensor_data(norel_data, batch_idx)
-        acc, loss = model.test_(input_img, input_qst, input_ans)
+        acc, loss = model.test_(input_img, input_qst, input_ans)    # pass to model
         
         acc_norel += acc.item()
         loss_norel += loss.item()
@@ -148,6 +201,15 @@ def test(rel_data, norel_data):
     return acc_rel, acc_norel, loss_rel, loss_norel
     
 def generate_plot(train_data_rel, train_data_norel, test_data_rel, test_data_norel, label):
+    """Helper function to generate plots
+
+    Args:
+        train_data_rel (list): Relational training accuracy/loss
+        train_data_norel (list): Non-relational training accuracy/loss
+        test_data_rel (list): Relational test accuracy/loss
+        test_data_norel (list): Non-relational test accuracy/loss
+        label (str): Label for title
+    """
     plt.figure()
     plt.plot(range(EPOCHS), train_data_rel, '-', label=f"train_{label}_rel")
     plt.plot(range(EPOCHS), train_data_norel, '-', label=f"train_{label}_norel")
@@ -159,32 +221,53 @@ def generate_plot(train_data_rel, train_data_norel, test_data_rel, test_data_nor
     plt.legend()
     plt.savefig(os.path.join("output", f"{label}.jpg"))
     print(f'{os.path.join("output", f"{label}.jpg")} saved...')
-    
-def test_single(rel_test, norel_test, idx):
-    img, rel_qst, rel_ans = rel_test[idx]
-    _, norel_qst, norel_ans = norel_test[idx]
-    
-    rel_pred, norel_pred = predict_one(rel_test, norel_test, idx=idx)
-    
-    data_entry = (img, (rel_qst, rel_ans, rel_pred), (norel_qst, norel_ans, norel_pred))
-    
-    translate(data_entry, filename=f'test_{idx}.jpg')
 
 def predict_one(rel_data, norel_data, idx):
+    """Helper function to get prediction for a single image
+
+    Args:
+        rel_test (list): Relational testing set
+        norel_test (list): Non-relational testing set
+        idx (int): Index of image to test
+
+    Returns:
+        int, int: Prediction for relation and non-relation question
+    """
     model.eval()
     
     rel_data = cvt_data_axis(rel_data)
     norel_data = cvt_data_axis(norel_data)
     
-    tensor_data(rel_data, 0)
+    tensor_data(rel_data, 0)    # get a batch
     pred_rel = model.pred_(input_img, input_qst)
     
-    tensor_data(norel_data, 0)
+    tensor_data(norel_data, 0)  # get a batch
     pred_norel = model.pred_(input_img, input_qst)
     
     return pred_rel[idx].cpu().numpy(), pred_norel[idx].cpu().numpy()
+    
+def test_single(rel_test, norel_test, idx):
+    """Helper function to test on a single image
+
+    Args:
+        rel_test (list): Relational testing set
+        norel_test (list): Non-relational testing set
+        idx (int): Index of image to test
+    """    
+    rel_pred, norel_pred = predict_one(rel_test, norel_test, idx=idx)   # get prediction
+
+    img, rel_qst, rel_ans = rel_test[idx]
+    _, norel_qst, norel_ans = norel_test[idx]
+    data_entry = (img, (rel_qst, rel_ans, rel_pred), (norel_qst, norel_ans, norel_pred))
+    
+    translate(data_entry, filename=f'test_{idx}.jpg')   # generate output image
 
 def driver(mode):
+    """Main function with training and testing loop
+
+    Args:
+        mode (str): train/test, if mode is train, train a model else just load model from saved path
+    """
     rel_train, rel_test, norel_train, norel_test = load_data()
     if mode == "train":
         print(f'Training mode...')
