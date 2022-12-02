@@ -10,14 +10,14 @@ class ConvBlock(nn.Module):
     def __init__(self):
         super(ConvBlock, self).__init__()
         
-        self.conv1 = nn.Conv2d(3, 24, 3, stride=2, padding=1)
-        self.batch_norm1 = nn.BatchNorm2d(24)
-        self.conv2 = nn.Conv2d(24, 24, 3, stride=2, padding=1)
-        self.batch_norm2 = nn.BatchNorm2d(24)
-        self.conv3 = nn.Conv2d(24, 24, 3, stride=2, padding=1)
-        self.batch_norm3 = nn.BatchNorm2d(24)
-        self.conv4 = nn.Conv2d(24, 24, 3, stride=2, padding=1)
-        self.batch_norm4 = nn.BatchNorm2d(24)
+        self.conv1 = nn.Conv2d(3, 32, 3, stride=2, padding=1)
+        self.batch_norm1 = nn.BatchNorm2d(32)
+        self.conv2 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
+        self.batch_norm2 = nn.BatchNorm2d(32)
+        self.conv3 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
+        self.batch_norm3 = nn.BatchNorm2d(32)
+        self.conv4 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
+        self.batch_norm4 = nn.BatchNorm2d(32)
         
     def forward(self, img):
         # forward pass for conv block
@@ -43,17 +43,25 @@ class FCBlock(nn.Module):
     # Fully connected block
     def __init__(self):
         super(FCBlock, self).__init__()
+        self.fc1 = nn.Linear(256, 256)
         self.fc2 = nn.Linear(256, 256)
-        self.fc3 = nn.Linear(256, 10)
+        self.fc3 = nn.Linear(256, 256)
+        self.fc4 = nn.Linear(256, 256)
+        self.out = nn.Linear(256, 10)
         
     def forward(self, x):
         # forward pass for fc block
+        x = self.fc1(x)
+        x = F.relu(x)
         x = self.fc2(x)
         x = F.relu(x)
-        x = F.dropout(x)
         x = self.fc3(x)
-        
-        return F.log_softmax(x, dim=1)
+        x = F.relu(x)
+        x = self.fc4(x)
+        x = F.relu(x)
+        x = self.out(x)
+
+      return F.log_softmax(x, dim=1) 
         
 class BasicBlock(nn.Module):
     # Base class with train, test, pred, and save model methods
@@ -95,7 +103,7 @@ class RN(BasicBlock):
         self.conv = ConvBlock() # conv block
         
         # g theta
-        self.g_fc1 = nn.Linear((24+2)*2+11, 256)
+        self.g_fc1 = nn.Linear((32+2)*2+11, 256)
         self.g_fc2 = nn.Linear(256, 256)
         self.g_fc3 = nn.Linear(256, 256)
         self.g_fc4 = nn.Linear(256, 256)
@@ -123,7 +131,6 @@ class RN(BasicBlock):
         self.coord_tensor.data.copy_(torch.from_numpy(np_coord_tensor))
         
         # f phi
-        self.f_fc1 = nn.Linear(256, 256)
         self.fcout = FCBlock()
         
         # optimizer

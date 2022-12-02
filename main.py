@@ -6,7 +6,7 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 from torch.autograd import Variable
-from model import RN
+from model_big import RN
 from util import translate
 
 torch.manual_seed(42)
@@ -14,7 +14,7 @@ torch.cuda.manual_seed(42)
 
 # initialize global variables
 BATCH_SIZE = 64
-EPOCHS = 20
+EPOCHS = 50
 
 # create model object
 model = RN()
@@ -314,6 +314,14 @@ def driver(mode):
         print(f'Testing mode...')
         model.load_state_dict(torch.load(os.path.join("model","RN.pth")))
         
+    acc_rel, acc_norel, loss_rel, loss_norel = test(rel_train, norel_train)
+    print('Final metrics on train set:')
+    print(f'Relational Accuracy: {acc_rel:.2f}\tNon-relational Accuracy: {acc_norel:.2f}')
+    print(f'Relational Loss: {loss_rel:.3f}\tNon-relational Loss: {loss_norel:.3f}')
+    acc_rel, acc_norel, loss_rel, loss_norel = test(rel_test, norel_test)
+    print('Final metrics on test set:')
+    print(f'Relational Accuracy: {acc_rel:.2f}\tNon-relational Accuracy: {acc_norel:.2f}')
+    print(f'Relational Loss: {loss_rel:.3f}\tNon-relational Loss: {loss_norel:.3f}')
     
     # test id 0 
     test_single(rel_test, norel_test, 0)

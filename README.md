@@ -11,8 +11,8 @@ Description of RN can be found [here](https://github.com/atharva-bhagwat/CSGY-66
 
 ### (40 points) Replicate the sort-of-CLEVR dataset result of the paper as quoted in the section 5.3. Please focus only on the CNN, augmented with RN, case.
 
-- With the [github repository](https://github.com/kimhc6028/relational-networks) as reference, we developed the model architecture, keeping the model size smaller but changing the question embedding shape(same as the paper).
-- After training the model for 20 epochs, we get the final metrics as follows:
+- With the [github repository](https://github.com/kimhc6028/relational-networks) as reference, we developed the model architecture, keeping the model size smaller but changing the question embedding shape, making it same as the paper.
+- After training the model for 50 epochs, we get the final metrics as follows:
 
 **Relational Data:**
 
@@ -20,13 +20,13 @@ On training set:
 
 | Accuracy(%) | Loss |
 |---|---|
-| 90.19 | 0.223 |
+| 99.43 | 0.002 |
 
 On testing set:
 
 | Accuracy(%) | Loss |
 |---|---|
-| 83.22 | 0.386 |
+| 87.70 | 0.576 |
 
 **Non-Relational Data:**
 
@@ -34,13 +34,13 @@ On training set:
 
 | Accuracy(%) | Loss |
 |---|---|
-| 99.95 | 0.002 |
+| 99.97 | 0.001 |
 
 On testing set:
 
 | Accuracy(%) | Loss |
 |---|---|
-| 99.85 | 0.003 |
+| 99.90 | 0.001 |
 
 Entire training log can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/logs.txt).
 

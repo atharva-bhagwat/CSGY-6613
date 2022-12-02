@@ -1,147 +1,365 @@
 Processing data...
 Training mode...
-Epoch: 1/20
+Epoch: 1/50
 Train Set:
-	Relational Acc: 61.26	Relational Loss: 0.672
-	Non-Relational Acc: 55.80	Non-Relational Loss: 0.716
+	Relational Acc: 64.03	Relational Loss: 0.639
+	Non-Relational Acc: 57.73	Non-Relational Loss: 0.689
 Test Set:
-	Relational Acc: 60.94	Relational Loss: 0.672
-	Non-Relational Acc: 57.11	Non-Relational Loss: 0.675
-Epoch: 2/20
+	Relational Acc: 65.07	Relational Loss: 0.626
+	Non-Relational Acc: 58.06	Non-Relational Loss: 0.670
+Epoch: 2/50
 Train Set:
-	Relational Acc: 65.69	Relational Loss: 0.613
-	Non-Relational Acc: 60.29	Non-Relational Loss: 0.649
+	Relational Acc: 66.00	Relational Loss: 0.609
+	Non-Relational Acc: 61.65	Non-Relational Loss: 0.641
 Test Set:
-	Relational Acc: 64.72	Relational Loss: 0.618
-	Non-Relational Acc: 59.48	Non-Relational Loss: 0.650
-Epoch: 3/20
+	Relational Acc: 64.52	Relational Loss: 0.621
+	Non-Relational Acc: 60.13	Non-Relational Loss: 0.659
+Epoch: 3/50
 Train Set:
-	Relational Acc: 66.14	Relational Loss: 0.607
-	Non-Relational Acc: 62.07	Non-Relational Loss: 0.640
+	Relational Acc: 66.33	Relational Loss: 0.603
+	Non-Relational Acc: 62.63	Non-Relational Loss: 0.635
 Test Set:
-	Relational Acc: 63.36	Relational Loss: 0.621
-	Non-Relational Acc: 60.84	Non-Relational Loss: 0.643
-Epoch: 4/20
+	Relational Acc: 64.42	Relational Loss: 0.634
+	Non-Relational Acc: 62.90	Non-Relational Loss: 0.644
+Epoch: 4/50
 Train Set:
-	Relational Acc: 66.39	Relational Loss: 0.604
-	Non-Relational Acc: 63.21	Non-Relational Loss: 0.632
+	Relational Acc: 66.92	Relational Loss: 0.597
+	Non-Relational Acc: 63.85	Non-Relational Loss: 0.627
 Test Set:
-	Relational Acc: 64.82	Relational Loss: 0.621
-	Non-Relational Acc: 62.55	Non-Relational Loss: 0.638
-Epoch: 5/20
+	Relational Acc: 65.47	Relational Loss: 0.611
+	Non-Relational Acc: 63.51	Non-Relational Loss: 0.631
+Epoch: 5/50
 Train Set:
-	Relational Acc: 66.60	Relational Loss: 0.604
-	Non-Relational Acc: 75.97	Non-Relational Loss: 0.432
+	Relational Acc: 67.92	Relational Loss: 0.587
+	Non-Relational Acc: 66.20	Non-Relational Loss: 0.594
 Test Set:
-	Relational Acc: 64.97	Relational Loss: 0.614
-	Non-Relational Acc: 88.26	Non-Relational Loss: 0.237
-Epoch: 6/20
+	Relational Acc: 66.33	Relational Loss: 0.627
+	Non-Relational Acc: 69.71	Non-Relational Loss: 0.532
+Epoch: 6/50
 Train Set:
-	Relational Acc: 67.73	Relational Loss: 0.592
-	Non-Relational Acc: 96.78	Non-Relational Loss: 0.076
+	Relational Acc: 68.42	Relational Loss: 0.581
+	Non-Relational Acc: 81.70	Non-Relational Loss: 0.351
 Test Set:
-	Relational Acc: 60.43	Relational Loss: 0.689
-	Non-Relational Acc: 99.40	Non-Relational Loss: 0.021
-Epoch: 7/20
+	Relational Acc: 66.48	Relational Loss: 0.596
+	Non-Relational Acc: 95.26	Non-Relational Loss: 0.115
+Epoch: 7/50
 Train Set:
-	Relational Acc: 68.63	Relational Loss: 0.579
+	Relational Acc: 69.75	Relational Loss: 0.566
+	Non-Relational Acc: 98.48	Non-Relational Loss: 0.041
+Test Set:
+	Relational Acc: 68.40	Relational Loss: 0.584
+	Non-Relational Acc: 98.79	Non-Relational Loss: 0.028
+Epoch: 8/50
+Train Set:
+	Relational Acc: 71.26	Relational Loss: 0.545
 	Non-Relational Acc: 99.55	Non-Relational Loss: 0.013
 Test Set:
-	Relational Acc: 68.25	Relational Loss: 0.594
-	Non-Relational Acc: 99.50	Non-Relational Loss: 0.020
-Epoch: 8/20
+	Relational Acc: 68.04	Relational Loss: 0.599
+	Non-Relational Acc: 99.34	Non-Relational Loss: 0.015
+Epoch: 9/50
 Train Set:
-	Relational Acc: 69.80	Relational Loss: 0.565
-	Non-Relational Acc: 99.73	Non-Relational Loss: 0.008
+	Relational Acc: 73.41	Relational Loss: 0.518
+	Non-Relational Acc: 99.69	Non-Relational Loss: 0.009
 Test Set:
-	Relational Acc: 68.70	Relational Loss: 0.578
-	Non-Relational Acc: 99.55	Non-Relational Loss: 0.021
-Epoch: 9/20
+	Relational Acc: 71.12	Relational Loss: 0.546
+	Non-Relational Acc: 99.55	Non-Relational Loss: 0.011
+Epoch: 10/50
 Train Set:
-	Relational Acc: 71.95	Relational Loss: 0.538
-	Non-Relational Acc: 99.82	Non-Relational Loss: 0.005
+	Relational Acc: 76.07	Relational Loss: 0.479
+	Non-Relational Acc: 99.79	Non-Relational Loss: 0.006
 Test Set:
-	Relational Acc: 71.42	Relational Loss: 0.552
-	Non-Relational Acc: 99.60	Non-Relational Loss: 0.013
-Epoch: 10/20
+	Relational Acc: 74.55	Relational Loss: 0.507
+	Non-Relational Acc: 99.60	Non-Relational Loss: 0.012
+Epoch: 11/50
 Train Set:
-	Relational Acc: 74.58	Relational Loss: 0.502
-	Non-Relational Acc: 99.86	Non-Relational Loss: 0.005
+	Relational Acc: 78.26	Relational Loss: 0.443
+	Non-Relational Acc: 99.83	Non-Relational Loss: 0.005
 Test Set:
-	Relational Acc: 63.05	Relational Loss: 0.760
-	Non-Relational Acc: 98.34	Non-Relational Loss: 0.052
-Epoch: 11/20
+	Relational Acc: 75.10	Relational Loss: 0.496
+	Non-Relational Acc: 99.65	Non-Relational Loss: 0.007
+Epoch: 12/50
 Train Set:
-	Relational Acc: 77.19	Relational Loss: 0.462
+	Relational Acc: 80.08	Relational Loss: 0.410
 	Non-Relational Acc: 99.87	Non-Relational Loss: 0.004
 Test Set:
-	Relational Acc: 75.81	Relational Loss: 0.502
-	Non-Relational Acc: 99.85	Non-Relational Loss: 0.004
-Epoch: 12/20
+	Relational Acc: 77.87	Relational Loss: 0.463
+	Non-Relational Acc: 99.80	Non-Relational Loss: 0.006
+Epoch: 13/50
 Train Set:
-	Relational Acc: 79.92	Relational Loss: 0.417
+	Relational Acc: 82.43	Relational Loss: 0.376
 	Non-Relational Acc: 99.88	Non-Relational Loss: 0.004
 Test Set:
-	Relational Acc: 78.33	Relational Loss: 0.457
-	Non-Relational Acc: 99.75	Non-Relational Loss: 0.007
-Epoch: 13/20
+	Relational Acc: 76.36	Relational Loss: 0.477
+	Non-Relational Acc: 99.75	Non-Relational Loss: 0.006
+Epoch: 14/50
 Train Set:
-	Relational Acc: 82.27	Relational Loss: 0.376
-	Non-Relational Acc: 99.90	Non-Relational Loss: 0.003
+	Relational Acc: 84.02	Relational Loss: 0.344
+	Non-Relational Acc: 99.91	Non-Relational Loss: 0.003
 Test Set:
-	Relational Acc: 79.13	Relational Loss: 0.447
-	Non-Relational Acc: 99.60	Non-Relational Loss: 0.010
-Epoch: 14/20
+	Relational Acc: 77.17	Relational Loss: 0.443
+	Non-Relational Acc: 99.19	Non-Relational Loss: 0.018
+Epoch: 15/50
 Train Set:
-	Relational Acc: 83.87	Relational Loss: 0.346
-	Non-Relational Acc: 99.92	Non-Relational Loss: 0.003
+	Relational Acc: 85.61	Relational Loss: 0.316
+	Non-Relational Acc: 99.89	Non-Relational Loss: 0.003
 Test Set:
-	Relational Acc: 81.65	Relational Loss: 0.417
-	Non-Relational Acc: 99.85	Non-Relational Loss: 0.004
-Epoch: 15/20
+	Relational Acc: 79.08	Relational Loss: 0.427
+	Non-Relational Acc: 99.85	Non-Relational Loss: 0.006
+Epoch: 16/50
 Train Set:
-	Relational Acc: 85.01	Relational Loss: 0.322
-	Non-Relational Acc: 99.94	Non-Relational Loss: 0.002
-Test Set:
-	Relational Acc: 81.05	Relational Loss: 0.388
-	Non-Relational Acc: 99.95	Non-Relational Loss: 0.003
-Epoch: 16/20
-Train Set:
-	Relational Acc: 86.17	Relational Loss: 0.299
+	Relational Acc: 86.93	Relational Loss: 0.290
 	Non-Relational Acc: 99.92	Non-Relational Loss: 0.002
 Test Set:
-	Relational Acc: 81.65	Relational Loss: 0.411
-	Non-Relational Acc: 99.90	Non-Relational Loss: 0.004
-Epoch: 17/20
+	Relational Acc: 81.15	Relational Loss: 0.433
+	Non-Relational Acc: 99.90	Non-Relational Loss: 0.002
+Epoch: 17/50
 Train Set:
-	Relational Acc: 87.29	Relational Loss: 0.278
-	Non-Relational Acc: 99.92	Non-Relational Loss: 0.003
+	Relational Acc: 88.17	Relational Loss: 0.267
+	Non-Relational Acc: 99.93	Non-Relational Loss: 0.002
 Test Set:
-	Relational Acc: 82.11	Relational Loss: 0.371
-	Non-Relational Acc: 99.90	Non-Relational Loss: 0.009
-Epoch: 18/20
+	Relational Acc: 79.84	Relational Loss: 0.405
+	Non-Relational Acc: 99.90	Non-Relational Loss: 0.004
+Epoch: 18/50
 Train Set:
-	Relational Acc: 88.27	Relational Loss: 0.260
+	Relational Acc: 89.24	Relational Loss: 0.245
+	Non-Relational Acc: 99.94	Non-Relational Loss: 0.002
+Test Set:
+	Relational Acc: 82.41	Relational Loss: 0.401
+	Non-Relational Acc: 99.90	Non-Relational Loss: 0.002
+Epoch: 19/50
+Train Set:
+	Relational Acc: 90.33	Relational Loss: 0.224
+	Non-Relational Acc: 99.93	Non-Relational Loss: 0.002
+Test Set:
+	Relational Acc: 82.11	Relational Loss: 0.418
+	Non-Relational Acc: 100.00	Non-Relational Loss: 0.001
+Epoch: 20/50
+Train Set:
+	Relational Acc: 91.24	Relational Loss: 0.206
+	Non-Relational Acc: 99.95	Non-Relational Loss: 0.002
+Test Set:
+	Relational Acc: 81.45	Relational Loss: 0.493
+	Non-Relational Acc: 99.90	Non-Relational Loss: 0.009
+Epoch: 21/50
+Train Set:
+	Relational Acc: 92.05	Relational Loss: 0.189
+	Non-Relational Acc: 99.94	Non-Relational Loss: 0.002
+Test Set:
+	Relational Acc: 81.75	Relational Loss: 0.442
+	Non-Relational Acc: 99.90	Non-Relational Loss: 0.003
+Epoch: 22/50
+Train Set:
+	Relational Acc: 92.90	Relational Loss: 0.171
+	Non-Relational Acc: 99.94	Non-Relational Loss: 0.002
+Test Set:
+	Relational Acc: 81.25	Relational Loss: 0.496
+	Non-Relational Acc: 99.95	Non-Relational Loss: 0.002
+Epoch: 23/50
+Train Set:
+	Relational Acc: 93.64	Relational Loss: 0.156
+	Non-Relational Acc: 99.96	Non-Relational Loss: 0.002
+Test Set:
+	Relational Acc: 80.95	Relational Loss: 0.493
+	Non-Relational Acc: 99.85	Non-Relational Loss: 0.003
+Epoch: 24/50
+Train Set:
+	Relational Acc: 94.33	Relational Loss: 0.142
+	Non-Relational Acc: 99.95	Non-Relational Loss: 0.002
+Test Set:
+	Relational Acc: 82.26	Relational Loss: 0.492
+	Non-Relational Acc: 99.80	Non-Relational Loss: 0.005
+Epoch: 25/50
+Train Set:
+	Relational Acc: 94.88	Relational Loss: 0.129
+	Non-Relational Acc: 99.95	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 82.16	Relational Loss: 0.503
+	Non-Relational Acc: 99.95	Non-Relational Loss: 0.001
+Epoch: 26/50
+Train Set:
+	Relational Acc: 95.46	Relational Loss: 0.117
+	Non-Relational Acc: 99.95	Non-Relational Loss: 0.002
+Test Set:
+	Relational Acc: 83.57	Relational Loss: 0.486
+	Non-Relational Acc: 99.95	Non-Relational Loss: 0.002
+Epoch: 27/50
+Train Set:
+	Relational Acc: 95.86	Relational Loss: 0.106
+	Non-Relational Acc: 99.94	Non-Relational Loss: 0.002
+Test Set:
+	Relational Acc: 81.91	Relational Loss: 0.534
+	Non-Relational Acc: 99.95	Non-Relational Loss: 0.001
+Epoch: 28/50
+Train Set:
+	Relational Acc: 96.35	Relational Loss: 0.095
 	Non-Relational Acc: 99.96	Non-Relational Loss: 0.001
 Test Set:
-	Relational Acc: 79.89	Relational Loss: 0.478
-	Non-Relational Acc: 99.85	Non-Relational Loss: 0.002
-Epoch: 19/20
+	Relational Acc: 82.81	Relational Loss: 0.543
+	Non-Relational Acc: 100.00	Non-Relational Loss: 0.001
+Epoch: 29/50
 Train Set:
-	Relational Acc: 89.24	Relational Loss: 0.241
+	Relational Acc: 96.65	Relational Loss: 0.088
+	Non-Relational Acc: 99.96	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 83.32	Relational Loss: 0.542
+	Non-Relational Acc: 100.00	Non-Relational Loss: 0.000
+Epoch: 30/50
+Train Set:
+	Relational Acc: 97.01	Relational Loss: 0.080
+	Non-Relational Acc: 99.96	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 84.32	Relational Loss: 0.627
+	Non-Relational Acc: 99.90	Non-Relational Loss: 0.005
+Epoch: 31/50
+Train Set:
+	Relational Acc: 97.27	Relational Loss: 0.072
 	Non-Relational Acc: 99.95	Non-Relational Loss: 0.002
 Test Set:
-	Relational Acc: 82.86	Relational Loss: 0.398
-	Non-Relational Acc: 99.45	Non-Relational Loss: 0.022
-Epoch: 20/20
+	Relational Acc: 83.87	Relational Loss: 0.599
+	Non-Relational Acc: 99.90	Non-Relational Loss: 0.001
+Epoch: 32/50
 Train Set:
-	Relational Acc: 90.19	Relational Loss: 0.223
-	Non-Relational Acc: 99.95	Non-Relational Loss: 0.002
+	Relational Acc: 97.43	Relational Loss: 0.069
+	Non-Relational Acc: 99.96	Non-Relational Loss: 0.001
 Test Set:
-	Relational Acc: 83.22	Relational Loss: 0.386
+	Relational Acc: 84.38	Relational Loss: 0.611
+	Non-Relational Acc: 99.90	Non-Relational Loss: 0.004
+Epoch: 33/50
+Train Set:
+	Relational Acc: 97.59	Relational Loss: 0.063
+	Non-Relational Acc: 99.97	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 83.37	Relational Loss: 0.650
+	Non-Relational Acc: 100.00	Non-Relational Loss: 0.000
+Epoch: 34/50
+Train Set:
+	Relational Acc: 97.83	Relational Loss: 0.058
+	Non-Relational Acc: 99.97	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 85.28	Relational Loss: 0.577
 	Non-Relational Acc: 99.85	Non-Relational Loss: 0.003
+Epoch: 35/50
+Train Set:
+	Relational Acc: 97.95	Relational Loss: 0.054
+	Non-Relational Acc: 99.99	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 84.83	Relational Loss: 0.598
+	Non-Relational Acc: 99.60	Non-Relational Loss: 0.008
+Epoch: 36/50
+Train Set:
+	Relational Acc: 98.06	Relational Loss: 0.053
+	Non-Relational Acc: 99.97	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 85.13	Relational Loss: 0.540
+	Non-Relational Acc: 99.85	Non-Relational Loss: 0.009
+Epoch: 37/50
+Train Set:
+	Relational Acc: 98.21	Relational Loss: 0.049
+	Non-Relational Acc: 99.97	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 85.89	Relational Loss: 0.502
+	Non-Relational Acc: 99.90	Non-Relational Loss: 0.008
+Epoch: 38/50
+Train Set:
+	Relational Acc: 98.26	Relational Loss: 0.046
+	Non-Relational Acc: 99.96	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 84.32	Relational Loss: 0.529
+	Non-Relational Acc: 100.00	Non-Relational Loss: 0.000
+Epoch: 39/50
+Train Set:
+	Relational Acc: 98.32	Relational Loss: 0.045
+	Non-Relational Acc: 99.97	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 84.22	Relational Loss: 0.630
+	Non-Relational Acc: 99.90	Non-Relational Loss: 0.002
+Epoch: 40/50
+Train Set:
+	Relational Acc: 98.45	Relational Loss: 0.043
+	Non-Relational Acc: 99.97	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 85.53	Relational Loss: 0.523
+	Non-Relational Acc: 99.95	Non-Relational Loss: 0.001
+Epoch: 41/50
+Train Set:
+	Relational Acc: 98.48	Relational Loss: 0.041
+	Non-Relational Acc: 99.96	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 84.83	Relational Loss: 0.604
+	Non-Relational Acc: 100.00	Non-Relational Loss: 0.001
+Epoch: 42/50
+Train Set:
+	Relational Acc: 98.62	Relational Loss: 0.039
+	Non-Relational Acc: 99.99	Non-Relational Loss: 0.000
+Test Set:
+	Relational Acc: 85.69	Relational Loss: 0.592
+	Non-Relational Acc: 99.85	Non-Relational Loss: 0.001
+Epoch: 43/50
+Train Set:
+	Relational Acc: 98.65	Relational Loss: 0.037
+	Non-Relational Acc: 99.96	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 86.39	Relational Loss: 0.551
+	Non-Relational Acc: 99.80	Non-Relational Loss: 0.011
+Epoch: 44/50
+Train Set:
+	Relational Acc: 98.72	Relational Loss: 0.035
+	Non-Relational Acc: 99.97	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 84.98	Relational Loss: 0.659
+	Non-Relational Acc: 99.95	Non-Relational Loss: 0.002
+Epoch: 45/50
+Train Set:
+	Relational Acc: 98.72	Relational Loss: 0.035
+	Non-Relational Acc: 99.97	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 86.74	Relational Loss: 0.596
+	Non-Relational Acc: 99.90	Non-Relational Loss: 0.002
+Epoch: 46/50
+Train Set:
+	Relational Acc: 98.80	Relational Loss: 0.033
+	Non-Relational Acc: 99.97	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 85.48	Relational Loss: 0.570
+	Non-Relational Acc: 99.90	Non-Relational Loss: 0.002
+Epoch: 47/50
+Train Set:
+	Relational Acc: 98.85	Relational Loss: 0.032
+	Non-Relational Acc: 99.97	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 87.00	Relational Loss: 0.554
+	Non-Relational Acc: 99.90	Non-Relational Loss: 0.011
+Epoch: 48/50
+Train Set:
+	Relational Acc: 98.89	Relational Loss: 0.031
+	Non-Relational Acc: 99.98	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 86.14	Relational Loss: 0.617
+	Non-Relational Acc: 99.85	Non-Relational Loss: 0.006
+Epoch: 49/50
+Train Set:
+	Relational Acc: 98.88	Relational Loss: 0.031
+	Non-Relational Acc: 99.97	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 86.04	Relational Loss: 0.556
+	Non-Relational Acc: 99.75	Non-Relational Loss: 0.006
+Epoch: 50/50
+Train Set:
+	Relational Acc: 98.91	Relational Loss: 0.030
+	Non-Relational Acc: 99.98	Non-Relational Loss: 0.001
+Test Set:
+	Relational Acc: 87.70	Relational Loss: 0.576
+	Non-Relational Acc: 99.90	Non-Relational Loss: 0.001
 output/acc.jpg saved...
 output/loss.jpg saved...
+
+Final metrics on train set:
+Relational Accuracy: 99.43	Non-relational Accuracy: 99.97
+Relational Loss: 0.002	Non-relational Loss: 0.001
+Final metrics on test set:
+Relational Accuracy: 87.70	Non-relational Accuracy: 99.90
+Relational Loss: 0.576	Non-relational Loss: 0.001
+
 output/test_0.jpg saved...
 output/test_15.jpg saved...
 output/test_30.jpg saved...
