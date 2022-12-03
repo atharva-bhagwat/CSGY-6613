@@ -99,31 +99,24 @@ class Dense(BasicBlock):
         
     def forward(self, img, ques):
         # forward pass for RN
-        print('img: ', img.shape)
         mb = img.size()[0] # 64
         n_channels = img.size()[1] # 1
         d = img.size()[2] # 6
         h = img.size()[3] # 4
         x_flat = img.view(mb, n_channels, d*h).permute(0,2,1) # 64, 1, 24 -> 64, 24, 1
         # x_flat = torch.cat([x_flat, self.coord_tensor], 2)
-        print('x_flat ',x_flat.shape)
         
         ques = torch.unsqueeze(ques, 1)
         ques = ques.repeat(1, d*h, 1)
         ques = torch.unsqueeze(ques, 2)
-        print('ques: ',ques.shape)
         
         x_i = torch.unsqueeze(x_flat, 1)
         x_i = x_i.repeat(1, d*h, 1, 1)
         x_j = torch.unsqueeze(x_flat, 2)
         x_j = torch.cat([x_j, ques], 3)
         x_j = x_j.repeat(1, 1, d*h, 1)
-
-        print('x_i: ',x_i.shape)
-        print('x_j: ',x_j.shape)
         
         x_full = torch.cat([x_i, x_j], 3)
-        print('x_full: ',x_full.shape)
         x_ = x_full.view(mb * (d*h) * (d*h), 13)
         
         x_ = self.g_fc1(x_)

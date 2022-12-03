@@ -14,7 +14,7 @@ torch.cuda.manual_seed(42)
 
 # initialize global variables
 BATCH_SIZE = 64
-EPOCHS = 200
+EPOCHS = 50
 
 # create model object
 model = Dense()
@@ -101,9 +101,9 @@ def load_data(folder="sort_of_clevr", filename="sort_of_clevr_descriptor.pkl"):
     for img, rel, norel in test:
       img = np.swapaxes(img, 0, 2)    # swap 1st and 3rd axis
       for qst, ans in zip(rel[0], rel[1]):
-          rel_train.append((img, qst, ans))
+          rel_test.append((img, qst, ans))
       for qst, ans in zip(norel[0], norel[1]):
-          norel_train.append((img, qst, ans))
+          norel_test.append((img, qst, ans))
     
     return rel_train, rel_test, norel_train, norel_test
     
