@@ -6,7 +6,7 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 from torch.autograd import Variable
-from model_big import RN
+from model import RN
 from util import translate
 
 torch.manual_seed(42)
@@ -14,7 +14,7 @@ torch.cuda.manual_seed(42)
 
 # initialize global variables
 BATCH_SIZE = 64
-EPOCHS = 50
+EPOCHS = 20
 
 # create model object
 model = RN()
