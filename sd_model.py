@@ -10,10 +10,10 @@ class FCBlock(nn.Module):
     # Fully connected block
     def __init__(self):
         super(FCBlock, self).__init__()
-        self.fc1 = nn.Linear(512, 1024)
-        self.fc2 = nn.Linear(1024, 256)
-        # self.fc3 = nn.Linear(256, 256)
-        # self.fc4 = nn.Linear(256, 256)
+        self.fc1 = nn.Linear(512, 512)
+        self.fc2 = nn.Linear(512, 512)
+        self.fc3 = nn.Linear(512, 256)
+        self.fc4 = nn.Linear(256, 256)
         self.out = nn.Linear(256, 10)
         
     def forward(self, x):
@@ -22,11 +22,10 @@ class FCBlock(nn.Module):
       x = F.relu(x)
       x = self.fc2(x)
       x = F.relu(x)
-      x = F.dropout(x, p=0.02)
-    #   x = self.fc3(x)
-    #   x = F.relu(x)
-    #   x = self.fc4(x)
-    #   x = F.relu(x)
+      x = self.fc3(x)
+      x = F.relu(x)
+      x = self.fc4(x)
+      x = F.relu(x)
       x = self.out(x)
 
       return F.log_softmax(x, dim=1) 
@@ -65,38 +64,38 @@ class Dense(BasicBlock):
         super(Dense, self).__init__()
       
         # g theta
-        self.g_fc1 = nn.Linear(13, 256)
+        self.g_fc1 = nn.Linear((1+2)*2+11, 256)
         self.g_fc2 = nn.Linear(256, 512)
-        self.g_fc3 = nn.Linear(512, 512)
+        # self.g_fc3 = nn.Linear(512, 512)
         self.g_fc4 = nn.Linear(512, 512)
 
-        # # restructure image and question embeddings
-        # self.coord_oi = torch.FloatTensor(batch_size, 2)
-        # self.coord_oj = torch.FloatTensor(batch_size, 2)
-        # self.coord_tensor = torch.FloatTensor(batch_size, 25, 2)
+        # restructure image and question embeddings
+        self.coord_oi = torch.FloatTensor(batch_size, 2)
+        self.coord_oj = torch.FloatTensor(batch_size, 2)
+        self.coord_tensor = torch.FloatTensor(batch_size, 24, 2)
         
-        # self.coord_oi = self.coord_oi.cuda()
-        # self.coord_oj = self.coord_oj.cuda()
-        # self.coord_tensor = self.coord_tensor.cuda()
+        self.coord_oi = self.coord_oi.cuda()
+        self.coord_oj = self.coord_oj.cuda()
+        self.coord_tensor = self.coord_tensor.cuda()
         
-        # self.coord_oi = Variable(self.coord_oi)
-        # self.coord_oj = Variable(self.coord_oj)
-        # self.coord_tensor = Variable(self.coord_tensor)
+        self.coord_oi = Variable(self.coord_oi)
+        self.coord_oj = Variable(self.coord_oj)
+        self.coord_tensor = Variable(self.coord_tensor)
         
-        # def cvt_coord(i):
-        #     return [(i/5-2)/2., (i%5-2)/2.]
+        def cvt_coord(i):
+            return [(i/5-2)/2., (i%5-2)/2.]
         
-        # np_coord_tensor = np.zeros((batch_size, 25, 2))
-        # for i in range(25):
-        #     np_coord_tensor[:,i,:] = np.array(cvt_coord(i))
+        np_coord_tensor = np.zeros((batch_size, 24, 2))
+        for i in range(24):
+            np_coord_tensor[:,i,:] = np.array(cvt_coord(i))
         
-        # self.coord_tensor.data.copy_(torch.from_numpy(np_coord_tensor))
+        self.coord_tensor.data.copy_(torch.from_numpy(np_coord_tensor))
         
         # f phi
         self.fcout = FCBlock()
         
         # optimizer
-        self.optimizer = optim.Adam(self.parameters(), lr=0.0001)
+        self.optimizer = optim.Adam(self.parameters(), lr=0.001)
         
     def forward(self, img, ques):
         # forward pass for RN
@@ -105,7 +104,7 @@ class Dense(BasicBlock):
         d = img.size()[2] # 6
         h = img.size()[3] # 4
         x_flat = img.view(mb, n_channels, d*h).permute(0,2,1) # 64, 1, 24 -> 64, 24, 1
-        # x_flat = torch.cat([x_flat, self.coord_tensor], 2)
+        x_flat = torch.cat([x_flat, self.coord_tensor], 2)
         
         ques = torch.unsqueeze(ques, 1)
         ques = ques.repeat(1, d*h, 1)
@@ -118,14 +117,14 @@ class Dense(BasicBlock):
         x_j = x_j.repeat(1, 1, d*h, 1)
         
         x_full = torch.cat([x_i, x_j], 3)
-        x_ = x_full.view(mb * (d*h) * (d*h), 13)
+        x_ = x_full.view(mb * (d*h) * (d*h), 17)
         
         x_ = self.g_fc1(x_)
         x_ = F.relu(x_)
         x_ = self.g_fc2(x_)
         x_ = F.relu(x_)
-        x_ = self.g_fc3(x_)
-        x_ = F.relu(x_)
+        # x_ = self.g_fc3(x_)
+        # x_ = F.relu(x_)
         x_ = self.g_fc4(x_)
         x_ = F.relu(x_)
         

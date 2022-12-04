@@ -1,5 +1,8 @@
-# CSGY-6613
-This repo contains code for AI project: Separating Perception and Reasoning via Relation Networks
+# (CSGY-6613)AI project: Separating Perception and Reasoning via Relation Networks
+
+- Atharva Bhagwat (acb9244)
+- Harini Appansrinivasan (ha1642)
+- Abdulqadir Zakir (az2424)
 
 ## Describe the RN (20 points)
 
@@ -65,7 +68,7 @@ Sample test output can be found [here](https://github.com/atharva-bhagwat/CSGY-6
 
 ### (40 points) Perform the “state description” task and create a table that represents the state of each image.
 
-State descriptors(as a CSV file) for the entire dataset can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/sort_of_clevr/sort_of_clevr_descriptor.csv). The CSV file can be loaded as a dataframe for training purposes.
+State descriptors(as a CSV file) for the entire dataset can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/sort_of_clevr/sort_of_clevr_descriptor.csv).
 
 Sample state descriptor for one image:
 
