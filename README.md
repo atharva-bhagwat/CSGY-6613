@@ -93,7 +93,7 @@ The RN network remains the same, only without the convolutional block. ie: it on
 ![RN SD](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/docs/RN_sd.jpg)
 
 - Best model parameters: $g_\theta$ consists of 3 fully connected layers with 256, 512, and 512 units and ReLU activations. $f_\phi$ consists of 4 fully connected layers with 512, 512, 512, and 256 units and ReLU activation and an output layer with 10 units with a softmax activation. We use Adam optimizer with learning rate of $0.001$.
-- We tried many different architectures by changing the number of units and number of layers in both $g_\theta$ and $f_\phi$, and learning rates like, $0.0001, 0.01, 0.1$. But the accuracies would stagnate around $60\%$.
+- We tried many different architectures by changing the number of units and number of layers in both $g_\theta$ and $f_\phi$, and learning rates like, $0.0001, 0.01, 0.1$. But the accuracies would stagnate around $60\\%$.
 - After training the model for 25 epochs, the best final metrics are as follows:
 
 **Relational Data:**
