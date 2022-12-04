@@ -10,10 +10,10 @@ class FCBlock(nn.Module):
     # Fully connected block
     def __init__(self):
         super(FCBlock, self).__init__()
-        self.fc1 = nn.Linear(256, 256)
-        self.fc2 = nn.Linear(256, 256)
-        self.fc3 = nn.Linear(256, 256)
-        self.fc4 = nn.Linear(256, 256)
+        self.fc1 = nn.Linear(512, 1024)
+        self.fc2 = nn.Linear(1024, 256)
+        # self.fc3 = nn.Linear(256, 256)
+        # self.fc4 = nn.Linear(256, 256)
         self.out = nn.Linear(256, 10)
         
     def forward(self, x):
@@ -22,10 +22,11 @@ class FCBlock(nn.Module):
       x = F.relu(x)
       x = self.fc2(x)
       x = F.relu(x)
-      x = self.fc3(x)
-      x = F.relu(x)
-      x = self.fc4(x)
-      x = F.relu(x)
+      x = F.dropout(x, p=0.02)
+    #   x = self.fc3(x)
+    #   x = F.relu(x)
+    #   x = self.fc4(x)
+    #   x = F.relu(x)
       x = self.out(x)
 
       return F.log_softmax(x, dim=1) 
@@ -65,9 +66,9 @@ class Dense(BasicBlock):
       
         # g theta
         self.g_fc1 = nn.Linear(13, 256)
-        self.g_fc2 = nn.Linear(256, 256)
-        self.g_fc3 = nn.Linear(256, 256)
-        self.g_fc4 = nn.Linear(256, 256)
+        self.g_fc2 = nn.Linear(256, 512)
+        self.g_fc3 = nn.Linear(512, 512)
+        self.g_fc4 = nn.Linear(512, 512)
 
         # # restructure image and question embeddings
         # self.coord_oi = torch.FloatTensor(batch_size, 2)
@@ -95,7 +96,7 @@ class Dense(BasicBlock):
         self.fcout = FCBlock()
         
         # optimizer
-        self.optimizer = optim.Adam(self.parameters(), lr=0.001)
+        self.optimizer = optim.Adam(self.parameters(), lr=0.0001)
         
     def forward(self, img, ques):
         # forward pass for RN
@@ -128,7 +129,7 @@ class Dense(BasicBlock):
         x_ = self.g_fc4(x_)
         x_ = F.relu(x_)
         
-        x_g = x_.view(mb, (d*h) * (d*h), 256)
+        x_g = x_.view(mb, (d*h) * (d*h), 512)
         x_g = x_g.sum(1).squeeze()
         
         return self.fcout(x_g)

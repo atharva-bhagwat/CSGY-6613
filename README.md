@@ -20,13 +20,13 @@ On training set:
 
 | Accuracy(%) | Loss |
 |---|---|
-| 99.43 | 0.002 |
+| 98.40 | 0.045 |
 
 On testing set:
 
 | Accuracy(%) | Loss |
 |---|---|
-| 87.70 | 0.576 |
+| 91.28 | 0.304 |
 
 **Non-Relational Data:**
 
@@ -34,13 +34,13 @@ On training set:
 
 | Accuracy(%) | Loss |
 |---|---|
-| 99.97 | 0.001 |
+| 99.98 | 0.001 |
 
 On testing set:
 
 | Accuracy(%) | Loss |
 |---|---|
-| 99.90 | 0.001 |
+| 99.97 | 0.001 |
 
 Entire training log can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/logs.txt).
 

@@ -14,7 +14,7 @@ torch.cuda.manual_seed(42)
 
 # initialize global variables
 BATCH_SIZE = 64
-EPOCHS = 20
+EPOCHS = 50
 
 # create model object
 model = RN()

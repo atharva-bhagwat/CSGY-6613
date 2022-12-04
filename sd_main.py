@@ -20,7 +20,7 @@ EPOCHS = 50
 model = Dense()
 
 # create tensors for image, question, and answer for batching
-input_img = torch.FloatTensor(BATCH_SIZE, 1, 4, 6)
+input_img = torch.FloatTensor(BATCH_SIZE, 1, 6, 4)
 input_qst = torch.FloatTensor(BATCH_SIZE, 11)
 input_ans = torch.LongTensor(BATCH_SIZE)
 
@@ -93,6 +93,7 @@ def load_data(folder="sort_of_clevr", filename="sort_of_clevr_descriptor.pkl"):
     # data is restructed as : [image, question, answer] for all images in training and testing set
     for img, rel, norel in train:
       img = np.swapaxes(img, 0, 2)    # swap 1st and 3rd axis
+      img = np.swapaxes(img, 1, 2)
       for qst, ans in zip(rel[0], rel[1]):
           rel_train.append((img, qst, ans))
       for qst, ans in zip(norel[0], norel[1]):
@@ -100,6 +101,7 @@ def load_data(folder="sort_of_clevr", filename="sort_of_clevr_descriptor.pkl"):
     
     for img, rel, norel in test:
       img = np.swapaxes(img, 0, 2)    # swap 1st and 3rd axis
+      img = np.swapaxes(img, 1, 2)
       for qst, ans in zip(rel[0], rel[1]):
           rel_test.append((img, qst, ans))
       for qst, ans in zip(norel[0], norel[1]):
