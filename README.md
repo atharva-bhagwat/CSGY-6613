@@ -7,6 +7,8 @@
 **NOTE:**
 - The dataset files for both image based sort-of-CLEVR and state descriptor based sort-of-CLEVR, ie: `.pkl` files cannot be uploaded to github due to size restrictions. These files can be generated using `generate_dataset.py`.
 - For visualization purposes a state descriptor table in `.CSV` file is added in the repository.
+- Output plots can be found in the [output folder](https://github.com/atharva-bhagwat/CSGY-6613/tree/main/output).
+- `run.ipynb` is the main file used to run all the scripts.
 
 ## Describe the RN (20 points)
 

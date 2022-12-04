@@ -73,7 +73,7 @@ def load_data(folder="sort_of_clevr", filename="sort_of_clevr_descriptor.pkl"):
 
     Args:
         folder (str): Path to dataset. Defaults to "sort_of_clevr".
-        filename (str): Pickle filename. Defaults to "sort_of_clevr.pkl".
+        filename (str): Pickle filename. Defaults to "sort_of_clevr_descriptor.pkl".
 
     Returns:
         list, list, list, list: relational training data, relational testing data, 

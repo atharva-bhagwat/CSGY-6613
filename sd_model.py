@@ -66,10 +66,9 @@ class Dense(BasicBlock):
         # g theta
         self.g_fc1 = nn.Linear((1+2)*2+11, 256)
         self.g_fc2 = nn.Linear(256, 512)
-        # self.g_fc3 = nn.Linear(512, 512)
-        self.g_fc4 = nn.Linear(512, 512)
+        self.g_fc3 = nn.Linear(512, 512)
 
-        # restructure image and question embeddings
+        # restructure state descriptor and question embeddings
         self.coord_oi = torch.FloatTensor(batch_size, 2)
         self.coord_oj = torch.FloatTensor(batch_size, 2)
         self.coord_tensor = torch.FloatTensor(batch_size, 24, 2)
@@ -123,9 +122,7 @@ class Dense(BasicBlock):
         x_ = F.relu(x_)
         x_ = self.g_fc2(x_)
         x_ = F.relu(x_)
-        # x_ = self.g_fc3(x_)
-        # x_ = F.relu(x_)
-        x_ = self.g_fc4(x_)
+        x_ = self.g_fc3(x_)
         x_ = F.relu(x_)
         
         x_g = x_.view(mb, (d*h) * (d*h), 512)
