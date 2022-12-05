@@ -4,6 +4,14 @@
 - Harini Appansrinivasan (ha1642)
 - Abdulqadir Zakir (az2424)
 
+**Goal:**
+Visual Question Answering (VQA) is a multi-modal task relating text and images through captions or a questionnaire. For example, with a picture of a busy highway, there could be a question: “How many red cars are there?” or “Are there more motorbikes than cars?”. It is a very challenging task since it requires high-level understanding of both the text and the image and the relationships between them.
+
+In this project, we study the Relation Networks implementations of AI approaches that offer the ability to combine neural and symbolic representations to answer VQA task.
+
+Relation Networks by DeepMind is a simple and representationally flexible general solution to relational reasoning in neural networks. We solve our problem using two different types of data, pixel-based and state-descriptions based.
+
+
 **Main Files:**
 - 'setup.md': Contains the instructions to clone our repo and use github with colab to run our code.
 - 'run.ipynb': The main set of commands to run all the scripts.
@@ -16,49 +24,42 @@
 - 'util.py': To format the questions for Sort-of-CELVR dataset.
 
 
-## Q1: Describe the RN (20 points)
+## Describe the RN (20 points)
 
 Description of RN can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/milestone1/milestone1.ipynb).
 
-**NOTE:** Our explanation of RN architecture and tensor-shape calculations are based on the model parameters as mentioned in the [paper](https://arxiv.org/pdf/1706.01427.pdf). 
-The reference repository given in the problem description works with a model with smaller kernels and a very different interpretation of questions embeddings, binary string of **length 18**. Whereas, the paper has a binary string of **length 11**.
+**NOTE:** Our explanation of RN architecture and calculation of tensor-shapes are based on the model parameters as mentioned in the [paper](https://arxiv.org/pdf/1706.01427.pdf). 
+The reference repository given in the problem description works with a model with smaller kernels and uses a very different interpretation of questions embeddings, binary string of **length 18**. Whereas, the paper has a binary string of **length 11**.
 
-## QA on Sort-of-CLEVR (80 points)
+## VQA on Sort-of-CLEVR (80 points)
 
-### Q2: (40 points) Replicate the sort-of-CLEVR dataset result of the paper as quoted in the section 5.3. Please focus only on the CNN, augmented with RN, case.
+### (40 points) Replicate the sort-of-CLEVR dataset result of the paper as quoted in the section 5.3. Please focus only on the CNN, augmented with RN, case.
 
-- With the [github repository](https://github.com/kimhc6028/relational-networks) as reference, we developed the model architecture, keeping the model size smaller but changing the question embedding shape, making it same as the paper(length 11).
-- Best model parameters: 4 conv layer block with 24 kernels each with ReLU activation and batch normalization. $g_\theta$ consists of 4 fully connected layers with 256 units and ReLU activations. $f_\phi$ consists of 4 fully connected layers with 256 units and ReLU activation and an output layer with 10 units with a softmax activation. We use Adam optimizer with learning rate of $0.001$.
-- We tried many different architectures by changing the number of units and number of layers in both $g_\theta$ and $f_\phi$, and learning rates like, $0.0001, 0.01, 0.1$.
+- With the [github repository](https://github.com/kimhc6028/relational-networks) as reference, we developed the model architecture, keeping the model size smaller than the one given in the paper, but changing the question embedding shape to match that in the paper (length 11).
+- We tried many different architectures: by changing the number of units and number of layers in both $g_\theta$ and $f_\phi$. We also tried with different hyper-parameters: learning rates like, $0.0001, 0.01, 0.1$, and optimizers like SGD, Adam.
+- Best model architecture: 
+  - 4 conv layer block with 24 kernels each with ReLU activation and batch normalization. 
+  - $g_\theta$ consists of 4 fully connected layers with 256 units and ReLU activations. 
+  - $f_\phi$ consists of 4 fully connected layers with 256 units and ReLU activation and an output layer with 10 units with a softmax activation.
+- Best hyper-parameters:
+  - number of epochs: 50
+  - learning rate: $0.001$
+  - Optimizer: Adam
+  - Batch size: 64
 - After training the model for 50 epochs, the best final metrics are as follows:
 
 **Relational Data:**
 
-On training set:
-
-| Accuracy(%) | Loss |
-|---|---|
-| 98.40 | 0.045 |
-
-On testing set:
-
-| Accuracy(%) | Loss |
-|---|---|
-| 91.28 | 0.304 |
+| Train Accuracy(%) | Train Loss | Test Accuracy(%) | Test Loss |
+|---|---|---|---|
+| 98.40 | 0.045 | 91.28 | 0.304 |
 
 **Non-Relational Data:**
 
-On training set:
+| Train Accuracy(%) | Train Loss | Test Accuracy(%) | Test Loss |
+|---|---|---|---|
+| 99.98 | 0.001 | 99.97 | 0.001 |
 
-| Accuracy(%) | Loss |
-|---|---|
-| 99.98 | 0.001 |
-
-On testing set:
-
-| Accuracy(%) | Loss |
-|---|---|
-| 99.97 | 0.001 |
 
 Entire training log can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/logs.txt).
 
@@ -78,10 +79,11 @@ Sample test output can be found [here](https://github.com/atharva-bhagwat/CSGY-6
 
 ![Test 4](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/output/test_45.jpg)
 
-### Q3: (40 points) Perform the “state description” task and create a table that represents the state of each image.
 
-State descriptor table(as a CSV file) for the entire dataset can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/sort_of_clevr/sort_of_clevr_descriptor.csv).
-For purpose of training, we use the `.pkl` file, generated using `generate_dataset.py`.
+### (40 points) Perform the “state description” task and create a table that represents the state of each image.
+
+- State descriptor table (as a CSV file) for the entire dataset can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/sort_of_clevr/sort_of_clevr_descriptor.csv).
+- For purpose of training, we use the `.pkl` file, generated using `generate_dataset.py`.
 
 Sample state descriptor for one image:
 
@@ -95,41 +97,35 @@ Sample state descriptor for one image:
 | yellow | [68, 7] | circle |
 
 #### Model architecuture
-The RN network remains the same, only without the convolutional block. ie: it only consists of the fully connected network.
+
+The RN network remains the same, only without the convolutional block since we are not dealing with pixels here. It only consists of the fully connected network.
 
 ![RN SD](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/docs/RN_sd.jpg)
 
-- Best model parameters: $g_\theta$ consists of 3 fully connected layers with 256, 512, and 512 units and ReLU activations. $f_\phi$ consists of 4 fully connected layers with 512, 512, 512, and 256 units and ReLU activation and an output layer with 10 units with a softmax activation. We use Adam optimizer with learning rate of $0.001$.
-- We tried many different architectures by changing the number of units and number of layers in both $g_\theta$ and $f_\phi$, and learning rates like, $0.0001, 0.01, 0.1$. But the accuracies would stagnate around $60\\%$.
+
+- We tried many different architectures by changing the number of units and number of layers in both $g_\theta$ and $f_\phi$. We also tried with different sets of hyper-parameters: learning rates like, $0.0001, 0.01, 0.1$, and optimizers like SGD, Adam. But the accuracies in most cases stagnated around $60\\%$.   
+- Best model architecture: 
+  - $g_\theta$ consists of 3 fully connected layers with 256, 512, and 512 units and ReLU activations. 
+  - $f_\phi$ consists of 4 fully connected layers with 512, 512, 512, and 256 units and ReLU activation and an output layer with 10 units with a softmax activation.
+- Best hyper-parameters:
+  - number of epochs: 50
+  - learning rate: $0.001$
+  - Optimizer: Adam
+  - Batch size: 64
+
 - After training the model for 25 epochs, the best final metrics are as follows:
 
 **Relational Data:**
 
-On training set:
-
-| Accuracy(%) | Loss |
-|---|---|
-| 98.40 | 0.045 |
-
-On testing set:
-
-| Accuracy(%) | Loss |
-|---|---|
-| 91.28 | 0.304 |
+| Train Accuracy(%) | Train Loss | Test Accuracy(%) | Test Loss |
+|---|---|---|---|
+| 69.02 | 0.575 | 68.25 | 0.595 |
 
 **Non-Relational Data:**
 
-On training set:
-
-| Accuracy(%) | Loss |
-|---|---|
-| 99.98 | 0.001 |
-
-On testing set:
-
-| Accuracy(%) | Loss |
-|---|---|
-| 99.97 | 0.001 |
+| Train Accuracy(%) | Train Loss | Test Accuracy(%) | Test Loss |
+|---|---|---|---|
+| 75.38 | 0.348 | 75.45 | 0.345 |
 
 Accuracy and Loss plots can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/tree/main/output):
 
