@@ -5,6 +5,7 @@
 - Abdulqadir Zakir (az2424)
 
 **Goal:**
+
 Visual Question Answering (VQA) is a multi-modal task relating text and images through captions or a questionnaire. For example, with a picture of a busy highway, there could be a question: “How many red cars are there?” or “Are there more motorbikes than cars?”. It is a very challenging task since it requires high-level understanding of both the text and the image and the relationships between them.
 
 In this project, we study the Relation Networks implementations of AI approaches that offer the ability to combine neural and symbolic representations to answer VQA task.
@@ -46,15 +47,17 @@ The reference repository given in the problem description works with a model wit
   - learning rate: $0.001$
   - Optimizer: Adam
   - Batch size: 64
-- After training the model for 50 epochs, the best final metrics are as follows:
 
-**Relational Data:**
+**Results:**
+After training the model for 50 epochs, the best final metrics are as follows:
+
+**Relational Data**
 
 | Train Accuracy(%) | Train Loss | Test Accuracy(%) | Test Loss |
 |---|---|---|---|
 | 98.40 | 0.045 | 91.28 | 0.304 |
 
-**Non-Relational Data:**
+**Non-Relational Data**
 
 | Train Accuracy(%) | Train Loss | Test Accuracy(%) | Test Loss |
 |---|---|---|---|
@@ -113,15 +116,16 @@ The RN network remains the same, only without the convolutional block since we a
   - Optimizer: Adam
   - Batch size: 64
 
-- After training the model for 25 epochs, the best final metrics are as follows:
+**Results:**
+After training the model for 25 epochs, the best final metrics are as follows:
 
-**Relational Data:**
+**Relational Data**
 
 | Train Accuracy(%) | Train Loss | Test Accuracy(%) | Test Loss |
 |---|---|---|---|
 | 69.02 | 0.575 | 68.25 | 0.595 |
 
-**Non-Relational Data:**
+**Non-Relational Data**
 
 | Train Accuracy(%) | Train Loss | Test Accuracy(%) | Test Loss |
 |---|---|---|---|
