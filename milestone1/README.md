@@ -118,4 +118,3 @@ Object pairs with questions:
 - Finally, concatenate set 1 and set 2 along the last axes, making the dimension (25,25,527), where
 
   last_dim_size=(2 for each set*(256 features + 2 coordinates)) + 11 ques = 527
-
