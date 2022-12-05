@@ -27,7 +27,7 @@ Relation Networks by DeepMind is a simple and representationally flexible genera
 
 ## Describe the RN (20 points)
 
-Description of RN can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/milestone1/milestone1.ipynb).
+Description of RN can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/milestone1). The milestone1.ipynb has the detailed architecture and tensor shapes at each stage.
 
 **NOTE:** Our explanation of RN architecture and calculation of tensor-shapes are based on the model parameters as mentioned in the [paper](https://arxiv.org/pdf/1706.01427.pdf). 
 The reference repository given in the problem description works with a model with smaller kernels and uses a very different interpretation of questions embeddings, binary string of **length 18**. Whereas, the paper has a binary string of **length 11**.
