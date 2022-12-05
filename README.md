@@ -14,15 +14,15 @@ Relation Networks by DeepMind is a simple and representationally flexible genera
 
 
 **Main Files:**
-- 'setup.md': Contains the instructions to clone our repo and use github with colab to run our code.
-- 'run.ipynb': The main set of commands to run all the scripts.
-- 'generate_dataset.py': Used to generate the datasets for both pixel-based and state-description based Sort-of-CELVR. The actual dataset files for both pixel based sort-of-CLEVR and state descriptor based sort-of-CLEVR, ie: `.pkl` files cannot be uploaded to github due to size restrictions. 
-- 'main.py' & 'model.py': Files related to pixel-based Sort-of-CLEVR data for Q2. Contains the model architecture and the code for training and testing.
-- 'sd_main.py' & 'sd_model.py': Files related to state-description-based Sort-of-CLEVR data for Q3. Contains the model architecture and the code for training and testing.
-- '/sort_of_clevr/sort_of_clevr_descriptor.csv': For visualization purposes a state descriptor table in `.CSV` format has been added to the repository here [sort_of_clevr](https://github.com/atharva-bhagwat/CSGY-6613/tree/main/sort_of_clevr).
-- 'output' folder: All the output plots can be found here [output](https://github.com/atharva-bhagwat/CSGY-6613/tree/main/output).
-- 'model' folder: Contains the best model for pixel-based and state-description based Sort-of-CELVR RN.
-- 'util.py': To format the questions for Sort-of-CELVR dataset.
+- `setup.md`: Contains the instructions to clone our repo and use github with colab to run our code.
+- `run.ipynb`: The main set of commands to run all the scripts.
+- `generate_dataset.py`: Used to generate the datasets for both pixel-based and state-description based Sort-of-CELVR. The actual dataset files for both pixel based sort-of-CLEVR and state descriptor based sort-of-CLEVR, ie: `.pkl` files cannot be uploaded to github due to size restrictions. 
+- `main.py` & `model.py`: Files related to pixel-based Sort-of-CLEVR data for Q2. Contains the model architecture and the code for training and testing.
+- `sd_main.py` & `sd_model.py`: Files related to state-description-based Sort-of-CLEVR data for Q3. Contains the model architecture and the code for training and testing.
+- `/sort_of_clevr/sort_of_clevr_descriptor.csv`: For visualization purposes a state descriptor table in `.CSV` format has been added to the repository [here](https://github.com/atharva-bhagwat/CSGY-6613/tree/main/sort_of_clevr).
+- `output` folder: All the output plots can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/tree/main/output).
+- `model` folder: Contains the best model for pixel-based and state-description based Sort-of-CELVR RN.
+- `util.py`: To format the questions for Sort-of-CELVR dataset.
 
 
 ## Describe the RN (20 points)
