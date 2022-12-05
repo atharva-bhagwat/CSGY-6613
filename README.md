@@ -4,13 +4,19 @@
 - Harini Appansrinivasan (ha1642)
 - Abdulqadir Zakir (az2424)
 
-**NOTE:**
-- The dataset files for both image based sort-of-CLEVR and state descriptor based sort-of-CLEVR, ie: `.pkl` files cannot be uploaded to github due to size restrictions. These files can be generated using `generate_dataset.py`.
-- For visualization purposes a state descriptor table in `.CSV` file is added in the repository.
-- Output plots can be found in the [output folder](https://github.com/atharva-bhagwat/CSGY-6613/tree/main/output).
-- `run.ipynb` is the main file used to run all the scripts.
+**Main Files:**
+- 'setup.md': Contains the instructions to clone our repo and use github with colab to run our code.
+- 'run.ipynb': The main set of commands to run all the scripts.
+- 'generate_dataset.py': Used to generate the datasets for both pixel-based and state-description based Sort-of-CELVR. The actual dataset files for both image based sort-of-CLEVR and state descriptor based sort-of-CLEVR, ie: `.pkl` files cannot be uploaded to github due to size restrictions. 
+- 'main.py' & 'model.py': Files related to pixel-based Sort-of-CLEVR data for Q2. Contains the model architecture and the code for training and testing.
+- 'sd_main.py' & 'sd_model.py': Files related to state-description-based Sort-of-CLEVR data for Q3. Contains the model architecture and the code for training and testing.
+- 'sort_of_clevr/sort_of_clevr_descriptor.csv': For visualization purposes a state descriptor table in `.CSV` format has been added to the repository (https://github.com/atharva-bhagwat/CSGY-6613/tree/main/sort_of_clevr).
+- 'output' folder: Contains the output plots (https://github.com/atharva-bhagwat/CSGY-6613/tree/main/output).
+- 'model' folder: Contains the best model for pixel-based and state-description based Sort-of-CELVR RN.
+- 'util.py': To format the questions for Sort-of-CELVR dataset.
 
-## Describe the RN (20 points)
+
+## Q1: Describe the RN (20 points)
 
 Description of RN can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/milestone1/milestone1.ipynb).
 
@@ -18,7 +24,7 @@ Description of RN can be found [here](https://github.com/atharva-bhagwat/CSGY-66
 
 ## QA on Sort-of-CLEVR (80 points)
 
-### (40 points) Replicate the sort-of-CLEVR dataset result of the paper as quoted in the section 5.3. Please focus only on the CNN, augmented with RN, case.
+### Q2: (40 points) Replicate the sort-of-CLEVR dataset result of the paper as quoted in the section 5.3. Please focus only on the CNN, augmented with RN, case.
 
 - With the [github repository](https://github.com/kimhc6028/relational-networks) as reference, we developed the model architecture, keeping the model size smaller but changing the question embedding shape, making it same as the paper(length 11).
 - Best model parameters: 4 conv layer block with 24 kernels each with ReLU activation and batch normalization. $g_\theta$ consists of 4 fully connected layers with 256 units and ReLU activations. $f_\phi$ consists of 4 fully connected layers with 256 units and ReLU activation and an output layer with 10 units with a softmax activation. We use Adam optimizer with learning rate of $0.001$.
@@ -71,7 +77,7 @@ Sample test output can be found [here](https://github.com/atharva-bhagwat/CSGY-6
 
 ![Test 4](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/output/test_45.jpg)
 
-### (40 points) Perform the “state description” task and create a table that represents the state of each image.
+### Q3: (40 points) Perform the “state description” task and create a table that represents the state of each image.
 
 State descriptor table(as a CSV file) for the entire dataset can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/sort_of_clevr/sort_of_clevr_descriptor.csv).
 For purpose of training, we use the `.pkl` file, generated using `generate_dataset.py`.
