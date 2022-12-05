@@ -7,11 +7,11 @@
 **Main Files:**
 - 'setup.md': Contains the instructions to clone our repo and use github with colab to run our code.
 - 'run.ipynb': The main set of commands to run all the scripts.
-- 'generate_dataset.py': Used to generate the datasets for both pixel-based and state-description based Sort-of-CELVR. The actual dataset files for both image based sort-of-CLEVR and state descriptor based sort-of-CLEVR, ie: `.pkl` files cannot be uploaded to github due to size restrictions. 
+- 'generate_dataset.py': Used to generate the datasets for both pixel-based and state-description based Sort-of-CELVR. The actual dataset files for both pixel based sort-of-CLEVR and state descriptor based sort-of-CLEVR, ie: `.pkl` files cannot be uploaded to github due to size restrictions. 
 - 'main.py' & 'model.py': Files related to pixel-based Sort-of-CLEVR data for Q2. Contains the model architecture and the code for training and testing.
 - 'sd_main.py' & 'sd_model.py': Files related to state-description-based Sort-of-CLEVR data for Q3. Contains the model architecture and the code for training and testing.
-- 'sort_of_clevr/sort_of_clevr_descriptor.csv': For visualization purposes a state descriptor table in `.CSV` format has been added to the repository (https://github.com/atharva-bhagwat/CSGY-6613/tree/main/sort_of_clevr).
-- 'output' folder: Contains the output plots (https://github.com/atharva-bhagwat/CSGY-6613/tree/main/output).
+- '/sort_of_clevr/sort_of_clevr_descriptor.csv': For visualization purposes a state descriptor table in `.CSV` format has been added to the repository here [sort_of_clevr](https://github.com/atharva-bhagwat/CSGY-6613/tree/main/sort_of_clevr).
+- 'output' folder: All the output plots can be found here [output](https://github.com/atharva-bhagwat/CSGY-6613/tree/main/output).
 - 'model' folder: Contains the best model for pixel-based and state-description based Sort-of-CELVR RN.
 - 'util.py': To format the questions for Sort-of-CELVR dataset.
 
@@ -20,7 +20,8 @@
 
 Description of RN can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/milestone1/milestone1.ipynb).
 
-**NOTE:** Above description, shape calculation is according to model parameters as mentioned in the [paper](https://arxiv.org/pdf/1706.01427.pdf). The reference repository given in the problem description works with a model with smaller kernels and a very different interpretation of questions embeddings, binary string of **length 18**. Whereas, the paper has a binary string of **length 11**.
+**NOTE:** Our explanation of RN architecture and tensor-shape calculations are based on the model parameters as mentioned in the [paper](https://arxiv.org/pdf/1706.01427.pdf). 
+The reference repository given in the problem description works with a model with smaller kernels and a very different interpretation of questions embeddings, binary string of **length 18**. Whereas, the paper has a binary string of **length 11**.
 
 ## QA on Sort-of-CLEVR (80 points)
 
