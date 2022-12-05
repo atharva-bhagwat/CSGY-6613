@@ -48,7 +48,8 @@ The reference repository given in the problem description works with a model wit
   - Optimizer: Adam
   - Batch size: 64
 
-**Results:**
+#### Results:
+
 After training the model for 50 epochs, the best final metrics are as follows:
 
 **Relational Data**
@@ -99,7 +100,7 @@ Sample state descriptor for one image:
 | gray | [53, 63] | rectangle |
 | yellow | [68, 7] | circle |
 
-#### Model architecuture
+#### Model architecuture:
 
 The RN network remains the same, only without the convolutional block since we are not dealing with pixels here. It only consists of the fully connected network.
 
@@ -116,7 +117,8 @@ The RN network remains the same, only without the convolutional block since we a
   - Optimizer: Adam
   - Batch size: 64
 
-**Results:**
+#### Results:
+
 After training the model for 25 epochs, the best final metrics are as follows:
 
 **Relational Data**
