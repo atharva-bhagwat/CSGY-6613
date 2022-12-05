@@ -3,7 +3,6 @@ import cv2
 import pickle
 import pandas as pd
 import numpy as np
-from uuid import uuid4
 from tqdm import tqdm
 np.random.seed(42)
 
@@ -46,7 +45,7 @@ class sortOfClevr():
         self.filename = os.path.join(self.data_path, "sort_of_clevr.pkl")
         
         self.state_descriptor_filename = os.path.join(self.data_path, "sort_of_clevr_descriptor.csv")
-        self.state_descriptor = pd.DataFrame(columns=['image_id','color','center','shape','area','dataset'])
+        self.state_descriptor = pd.DataFrame(columns=['color','center','shape'])
         
         self.descriptor_trainer_path = os.path.join(self.data_path, "sort_of_clevr_descriptor.pkl")
         
@@ -81,16 +80,13 @@ class sortOfClevr():
             objects (list): List of shapes and their properties in an image
             mode (str): train/test mode the image belongs to
         """
-        image_id = uuid4()  # randomly generate an ID for a image, to save in a data-frame
         for itr_obj in objects:
           shape = 'rectangle' if itr_obj[2] == 'r' else 'circle'
           area = (self.shape_size*2)**2 if shape == 'rectangle' else 2*np.pi*self.shape_size
           self.state_descriptor = self.state_descriptor.append({
-            'image_id':image_id,
             'color': self.color_mapping[itr_obj[0]],
             'center': itr_obj[1],
             'shape': shape,
-            'area': area
           }, ignore_index=True)
 
     def write_state_descriptor(self):
