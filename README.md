@@ -133,6 +133,8 @@ After training the model for 25 epochs, the best final metrics are as follows:
 |---|---|---|---|
 | 75.38 | 0.348 | 75.45 | 0.345 |
 
+Entire training log can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/logs_sd.txt).
+
 Accuracy and Loss plots can be found [here](https://github.com/atharva-bhagwat/CSGY-6613/tree/main/output):
 
 ![Accuracy Plot](https://github.com/atharva-bhagwat/CSGY-6613/blob/main/output/acc_sd.jpg)
